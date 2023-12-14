@@ -1,4 +1,4 @@
-import MyQueryBuilder from './component/MyqQueryBuilder';
+import MyQueryBuilder from './component/MyQueryBuilder';
 import './App.css';
 
 function App() {
