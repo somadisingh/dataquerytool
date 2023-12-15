@@ -1,9 +1,10 @@
 import { formatQuery, QueryBuilder } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 import { useState } from 'react';
+import axios from 'axios';
 
 const fields = [
-  { name: 'carrierName', label: 'Carrier Name' },
+  { name: 'carriername', label: 'Carrier Name' },
   { name: 'origin', label: 'Origin' },
   { name: 'destination', label: 'Destination' },
   { name: 'mode', label: 'Mode' },
@@ -12,19 +13,31 @@ const fields = [
   {name: 'mode', label: 'Mode'},
 ];
 
-const tableNames = ['rates', 'routes', 'carriers', 'vessels', 'ports', 'locations'];
+const runCustomQuery = async(sql) => {
+  try {
+    const response = await axios.post('http://localhost:8080/api/customquery/execute', { sql });
+        const result = response.data;
+        // Process the result as needed
+        console.log(result);
+  }
+  catch (err) {
+    console.log(err);
+  }
+};
+
+const tableNames = ['rate', 'route', 'carrier'];
 
 const initialQuery = { //what the initial display output on the front end will look like
   combinator: 'and',
   rules: [
-    { field: 'carrierName', operator: '=', value: 'COSCO' },
+    { field: 'carriername', operator: '=', value: 'DHL' },
   ],
 };
 
 const MyqQueryBuilder = () => {
   const [query, setQuery] = useState(initialQuery); //query represents the initial state of the query and is initialized with the initialQuery object
   const [formattedQuery, setFormattedQuery] = useState(formatQuery(query, 'sql')); // this code is for query to be displayed in sql format
-  const [tableName, setTableName] = useState('rates'); // this is the initial state of the table name and is initialized with the rates table
+  const [tableName, setTableName] = useState('carrier'); // this is the initial state of the table name and is initialized with the rates table
   const handleQueryChange = (q) => { 
     setQuery(q);
     setFormattedQuery(formatQuery(q, 'sql'));
@@ -42,6 +55,8 @@ const MyqQueryBuilder = () => {
   // add the table name to the formattedQuery1 string in the format "select * from <table_name> where <formattedQuery1>"
   formattedQuery1 = `select * from ${tableName} where ${formattedQuery1}`;
   console.log(formattedQuery1);
+  runCustomQuery(formattedQuery1);
+
 
   /* add a small drop down selector to select the table name and then append the table name to the formattedQuery1 string in the format "select * from <table_name> where <formattedQuery1>"
   // this will be the final query that will be sent to the backend
