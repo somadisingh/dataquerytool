@@ -12,4 +12,8 @@ public interface CarrierRepo extends CrudRepository<Carrier, Integer> {
 
     @Query(value = "select * FROM carrier", nativeQuery = true)
     public List<Carrier>getAllCarriers();
+
+    //select * from carriers where carriername = 'DHL'
+    @Query(value = "select * FROM carrier where carriername = :carriername", nativeQuery = true)
+    public List<Carrier>getCarrierByName(String carriername);
 }
