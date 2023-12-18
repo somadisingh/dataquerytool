@@ -15,11 +15,11 @@ public class ReactqlApplication {
 		CarrierRepo carrierRepo = context.getBean(CarrierRepo.class);
 		// RouteRepo routeRepo = context.getBean(RouteRepo.class);
 		// RateRepo rateRepo = context.getBean(RateRepo.class);
-		customqueryRepo customqueryRepo = context.getBean(customqueryRepo.class);
+		//customqueryRepo customqueryRepo = context.getBean(customqueryRepo.class);
 
-		customqueryRepo.findByCustomCondition("U").forEach(carrier1 -> {
-			System.out.println(carrier1);
-		});
+		// customqueryRepo.findByCustomCondition("U").forEach(carrier1 -> {
+		// 	System.out.println(carrier1);
+		// });
 
 		carrierRepo.findByCarriername("DHL").forEach(carrier -> {
 			System.out.println(carrier);

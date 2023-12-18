@@ -17,7 +17,7 @@ public class CustomQueryService {
     }
 
     public List<Map<String, Object>> runCustomQuery(String sql) {
-        System.out.println(sql+"----___________------");
+        // System.out.println(sql+"----___________------");
         return jdbcTemplate.queryForList(sql);
     }
 }
