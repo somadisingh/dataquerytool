@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { formatQuery, QueryBuilder } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 import axios from 'axios';
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // const fields = [
 //   { name: 'carriername', label: 'Carrier Name' },
@@ -44,9 +44,8 @@ const NewQueryBuilder = () => {
       if (!sql.toLowerCase().includes('show tables') && !sql.toLowerCase().includes('describe')) setResult(result);
 
       // If the query is 'show tables', update the tableNames state
-      if (sql.toLowerCase().includes('show tables')) {
-        setTableNames(result);        
-      }
+      if (sql.toLowerCase().includes('show tables')) setTableNames(result);  
+
       // If the query is 'describe', update the columnNames state
       if (sql.toLowerCase().includes('describe')) {
         console.log(result);
@@ -54,9 +53,25 @@ const NewQueryBuilder = () => {
         const fields = result.map((column) => ({ name: column.Field, label: column.Field }));
         setFields(fields);
       }
+      if (sql.toLowerCase().includes('select')) {
+        if (result.length > 0) {
+          toast.success("Query Executed Successfully!", {
+            position: toast.POSITION.TOP_CENTER
+          });
+        } else {
+            toast.warn("No results found!", {
+                position: toast.POSITION.TOP_CENTER
+            });
+            }
+    }
     } catch (err) {
       console.log(err);
         // toast("Query Execution Failed!");
+        if (err.response && err.response.status === 500) {
+            toast.warn("Please check your query and try again!", {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }
     } finally {
       setLoading(false);
     }
@@ -127,6 +142,18 @@ const NewQueryBuilder = () => {
 
   return (
     <div>
+        <ToastContainer
+            position="top-center"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            pauseOnHover
+            draggable
+            theme="colored"
+         />
       <label htmlFor="tableName">Select Table:</label>
       <select id="tableName" value={tableName} onChange={handleTableChange}>
         {tableNames
