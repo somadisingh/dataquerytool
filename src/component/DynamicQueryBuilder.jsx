@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { formatQuery, QueryBuilder } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 import axios from 'axios';
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
 // const fields = [
 //   { name: 'carriername', label: 'Carrier Name' },
@@ -27,7 +29,10 @@ const NewQueryBuilder = () => {
   const [loading, setLoading] = useState(false);
   const [tableNames, setTableNames] = useState([]);
   const [columnNames, setColumnNames] = useState([]);
-  const [fields, setFields] = useState([]); // this is hardcoded, so fetch column names from the table user selects (tbd)
+  const [fields, setFields] = useState([]); 
+  const [selectedColumns, setSelectedColumns] = useState([]);
+
+  // const notify = () => toast("Query Executed Successfully!");
 
   const runCustomQuery = async (sql) => {
     try {
@@ -51,6 +56,7 @@ const NewQueryBuilder = () => {
       }
     } catch (err) {
       console.log(err);
+        // toast("Query Execution Failed!");
     } finally {
       setLoading(false);
     }
@@ -70,7 +76,7 @@ const NewQueryBuilder = () => {
     //runCustomQuery(`describe ${selectedTable}`)
     try {
         setLoading(true);
-        console.log("hello "+selectedTable);
+        // console.log("hello "+selectedTable);
         const response = await runCustomQuery(`describe ${selectedTable}`);
         // console.lo//g(response);
         const columns = response.data.map((column) => column.Field);
@@ -87,14 +93,23 @@ const NewQueryBuilder = () => {
 
   const handleColumnChange = (c) => {
     const selectedColumn = c.target.value;
-    setColumnName(selectedColumn);
+    // setColumnName(selectedColumn);
+    if (selectedColumns.includes(selectedColumn)) {
+        setSelectedColumns(selectedColumns.filter((col) => col !== selectedColumn));
+      } else {
+        setSelectedColumns([...selectedColumns, selectedColumn]);
+      }
+      console.log(selectedColumns);
   };
 
   const handleExecuteQuery = () => {
     let formattedQuery1 = formattedQuery.substring(1, formattedQuery.length - 1);
-    formattedQuery1 = `select ${columnName} from ${tableName} where ${formattedQuery1}`;
+    const selectedColumnString = selectedColumns.join(', ');
+    formattedQuery1 = `select ${selectedColumnString} from ${tableName} where ${formattedQuery1}`;
     console.log(formattedQuery1);
     runCustomQuery(formattedQuery1);
+    // empty the selectedColumns state
+    setSelectedColumns([]);
   };
 
   useEffect(() => {
@@ -123,14 +138,21 @@ const NewQueryBuilder = () => {
           ))}
       </select>
 
-      <label htmlFor="columnName">Select Column:</label>
-        <select id="columnName" value={columnName} onChange={handleColumnChange}>
+      <label htmlFor="columnName">Select Columns:</label>
+      <div>
         {columnNames.map((columnName) => (
-            <option key={columnName} value={columnName}>
-            {columnName}
-            </option>
+          <div key={columnName}>
+            <input
+              type="checkbox"
+              id={columnName}
+              value={columnName}
+              checked={selectedColumns.includes(columnName)}
+              onChange={handleColumnChange}
+            />
+            <label htmlFor={columnName}>{columnName}</label>
+          </div>
         ))}
-        </select>
+      </div>
 
 
       <QueryBuilder fields={fields} query={query} onQueryChange={handleQueryChange} />
