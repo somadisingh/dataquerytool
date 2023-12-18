@@ -13,8 +13,6 @@ const fields = [
   { name: 'mode', label: 'Mode' },
 ];
 
-const columnNames = ['carriername', 'origin', 'destination', 'mode', 'routeid', 'rateid', '*'];
-
 const NewQueryBuilder = () => {
   const [query, setQuery] = useState({
     combinator: 'and',
@@ -28,6 +26,7 @@ const NewQueryBuilder = () => {
   const [result, setResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [tableNames, setTableNames] = useState([]);
+  const [columnNames, setColumnNames] = useState([]);
 
   const runCustomQuery = async (sql) => {
     try {
@@ -35,11 +34,16 @@ const NewQueryBuilder = () => {
       const response = await axios.post('http://localhost:8080/api/customquery/execute', { sql });
       const result = response.data;
       console.log(result);
-      setResult(result);
+        // If the query is not 'show tables' or 'describe', update the result state
+      if (!sql.toLowerCase().includes('show tables') && !sql.toLowerCase().includes('describe')) setResult(result);
 
       // If the query is 'show tables', update the tableNames state
       if (sql.toLowerCase().includes('show tables')) {
-        setTableNames(result);
+        setTableNames(result);        
+      }
+      // If the query is 'describe', update the columnNames state
+      if (sql.toLowerCase().includes('describe')) {
+        setColumnNames(result.map((column) => column.Field));
       }
     } catch (err) {
       console.log(err);
@@ -56,6 +60,20 @@ const NewQueryBuilder = () => {
   const handleTableChange = (t) => {
     const selectedTable = t.target.value;
     setTableName(selectedTable);
+    //console.log(selectedTable);
+    // Fetch column names for the selected table
+    // console.log(runCustomQuery(`describe ${selectedTable}`));
+    //runCustomQuery(`describe ${selectedTable}`)
+    try {
+        setLoading(true);
+        const response = runCustomQuery(`describe ${selectedTable}`);
+        const columns = response.data.map((column) => column.Field);
+        setColumnNames(columns);
+    } catch (err) {
+        console.error(err);
+    } finally {
+        setLoading(false);
+    }
   };
 
   const handleColumnChange = (c) => {
@@ -94,13 +112,14 @@ const NewQueryBuilder = () => {
       </select>
 
       <label htmlFor="columnName">Select Column:</label>
-      <select id="columnName" value={columnName} onChange={handleColumnChange}>
+        <select id="columnName" value={columnName} onChange={handleColumnChange}>
         {columnNames.map((columnName) => (
-          <option key={columnName} value={columnName}>
+            <option key={columnName} value={columnName}>
             {columnName}
-          </option>
+            </option>
         ))}
-      </select>
+        </select>
+
 
       <QueryBuilder fields={fields} query={query} onQueryChange={handleQueryChange} />
 
