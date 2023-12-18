@@ -14,14 +14,17 @@ public class Carrier {
 
     private String carriername;
 
+    private String carriermode;
+
     public Carrier() {
         super();
     }
 
-    public Carrier(int carriercode, String carriername) {
+    public Carrier(int carriercode, String carriername, String carriermode) {
         super();
         this.carriercode = carriercode;
         this.carriername = carriername;
+        this.carriermode = carriermode;
     }
 
 
@@ -41,9 +44,17 @@ public class Carrier {
         this.carriername = carriername;
     }
 
+    public String getCarrierMode() {
+        return carriermode;
+    }
+
+    public void setCarrierMode(String carriermode) {
+        this.carriermode = carriermode;
+    }
+
     @Override
     public String toString() {
-        return "Carrier Details: CarrierCode=" + carriercode + ", CarrierName=" + carriername + "\n";
+        return "Carrier Details: CarrierCode=" + carriercode + ", CarrierName=" + carriername + ", CarrierMode=" + carriermode + "\n";
     }
         
 }
