@@ -3,15 +3,15 @@ import { formatQuery, QueryBuilder } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 import axios from 'axios';
 
-const fields = [
-  { name: 'carriername', label: 'Carrier Name' },
-  { name: 'origin', label: 'Origin' },
-  { name: 'destination', label: 'Destination' },
-  { name: 'mode', label: 'Mode' },
-  { name: 'routeId', label: 'Route Id' },
-  { name: 'rateId', label: 'Rate Id' },
-  { name: 'mode', label: 'Mode' },
-];
+// const fields = [
+//   { name: 'carriername', label: 'Carrier Name' },
+//   { name: 'origin', label: 'Origin' },
+//   { name: 'destination', label: 'Destination' },
+//   { name: 'mode', label: 'Mode' },
+//   { name: 'routeId', label: 'Route Id' },
+//   { name: 'rateId', label: 'Rate Id' },
+//   { name: 'mode', label: 'Mode' },
+// ];
 
 const NewQueryBuilder = () => {
   const [query, setQuery] = useState({
@@ -27,6 +27,7 @@ const NewQueryBuilder = () => {
   const [loading, setLoading] = useState(false);
   const [tableNames, setTableNames] = useState([]);
   const [columnNames, setColumnNames] = useState([]);
+  const [fields, setFields] = useState([]); // this is hardcoded, so fetch column names from the table user selects (tbd)
 
   const runCustomQuery = async (sql) => {
     try {
@@ -45,6 +46,8 @@ const NewQueryBuilder = () => {
       if (sql.toLowerCase().includes('describe')) {
         console.log(result);
         setColumnNames(result.map((column) => column.Field));
+        const fields = result.map((column) => ({ name: column.Field, label: column.Field }));
+        setFields(fields);
       }
     } catch (err) {
       console.log(err);
@@ -73,6 +76,8 @@ const NewQueryBuilder = () => {
         const columns = response.data.map((column) => column.Field);
         //console.log("are you there?");
         setColumnNames(columns);
+        const fields = result.map((column) => ({ name: column.Field, label: column.Field }));
+        setFields(fields);
     } catch (err) {
         console.error(err);
     } finally {
