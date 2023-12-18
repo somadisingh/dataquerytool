@@ -93,7 +93,8 @@ const NewQueryBuilder = () => {
   };
 
   useEffect(() => {
-    // Initial query execution on component mount 
+    // Initial query execution on component mount
+    // in order to avoid a constant ping to the backend, we only want to run the query when the formattedQuery, tableName, or columnName changes
     if (!loading && formattedQuery === '' && tableName === '' && columnName === '') {
         runCustomQuery('show tables');
       }
