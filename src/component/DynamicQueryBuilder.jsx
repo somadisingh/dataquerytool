@@ -17,12 +17,12 @@ const NewQueryBuilder = () => {
   const [query, setQuery] = useState({
     combinator: 'and',
     rules: [
-      { field: 'carriername', operator: '=', value: 'DHL' },
+      { field: '', operator: '=', value: '' },
     ],
   });
   const [formattedQuery, setFormattedQuery] = useState(formatQuery(query, 'sql'));
-  const [tableName, setTableName] = useState('carrier');
-  const [columnName, setColumnName] = useState('carriername');
+  const [tableName, setTableName] = useState();
+  const [columnName, setColumnName] = useState();
   const [result, setResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [tableNames, setTableNames] = useState([]);
@@ -33,7 +33,7 @@ const NewQueryBuilder = () => {
       setLoading(true);
       const response = await axios.post('http://localhost:8080/api/customquery/execute', { sql });
       const result = response.data;
-      console.log(result);
+      //console.log(result);
         // If the query is not 'show tables' or 'describe', update the result state
       if (!sql.toLowerCase().includes('show tables') && !sql.toLowerCase().includes('describe')) setResult(result);
 
@@ -43,6 +43,7 @@ const NewQueryBuilder = () => {
       }
       // If the query is 'describe', update the columnNames state
       if (sql.toLowerCase().includes('describe')) {
+        console.log(result);
         setColumnNames(result.map((column) => column.Field));
       }
     } catch (err) {
@@ -57,17 +58,20 @@ const NewQueryBuilder = () => {
     setFormattedQuery(formatQuery(q, 'sql'));
   };
 
-  const handleTableChange = (t) => {
+  const handleTableChange = async (t) => {
     const selectedTable = t.target.value;
     setTableName(selectedTable);
     //console.log(selectedTable);
     // Fetch column names for the selected table
-    // console.log(runCustomQuery(`describe ${selectedTable}`));
+    // console.log("hello"+runCustomQuery(`describe ${selectedTable}`));
     //runCustomQuery(`describe ${selectedTable}`)
     try {
         setLoading(true);
-        const response = runCustomQuery(`describe ${selectedTable}`);
+        console.log("hello "+selectedTable);
+        const response = await runCustomQuery(`describe ${selectedTable}`);
+        // console.lo//g(response);
         const columns = response.data.map((column) => column.Field);
+        //console.log("are you there?");
         setColumnNames(columns);
     } catch (err) {
         console.error(err);
@@ -89,9 +93,11 @@ const NewQueryBuilder = () => {
   };
 
   useEffect(() => {
-    // Initial query execution on component mount (you can modify this behavior if needed)
-    handleExecuteQuery();
-  }, [formattedQuery, tableName, columnName]);
+    // Initial query execution on component mount 
+    if (!loading && formattedQuery === '' && tableName === '' && columnName === '') {
+        runCustomQuery('show tables');
+      }
+  }, [loading, formattedQuery, tableName, columnName]);
 
   useEffect(() => {
     // Fetch table names on component mount
