@@ -4,6 +4,7 @@ import 'react-querybuilder/dist/query-builder.css';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import SaveQueryButton from './QuerySaver';
 
 // const fields = [
 //   { name: 'carriername', label: 'Carrier Name' },
@@ -31,6 +32,9 @@ const NewQueryBuilder = () => {
   const [columnNames, setColumnNames] = useState([]);
   const [fields, setFields] = useState([]); 
   const [selectedColumns, setSelectedColumns] = useState([]);
+  const [databaseName, setDatabaseName] = useState('');
+  const [queryDescription, setQueryDescription] = useState('');
+  const [finalQuery, setFinalQuery] = useState('');
 
   // const notify = () => toast("Query Executed Successfully!");
 
@@ -40,8 +44,8 @@ const NewQueryBuilder = () => {
       const response = await axios.post('http://localhost:8080/api/customquery/execute', { sql });
       const result = response.data;
       //console.log(result);
-        // If the query is not 'show tables' or 'describe', update the result state
-      if (!sql.toLowerCase().includes('show tables') && !sql.toLowerCase().includes('describe')) setResult(result);
+        // If the query is not 'show tables' or 'describe'or 'select database()' update the result state
+      if (!sql.toLowerCase().includes('show tables') && !sql.toLowerCase().includes('describe') && !sql.toLowerCase().includes('database()')) setResult(result);
 
       // If the query is 'show tables', update the tableNames state
       if (sql.toLowerCase().includes('show tables')) setTableNames(result);  
@@ -53,7 +57,15 @@ const NewQueryBuilder = () => {
         const fields = result.map((column) => ({ name: column.Field, label: column.Field }));
         setFields(fields);
       }
-      if (sql.toLowerCase().includes('select')) {
+
+        // If the query is 'select database()', update the databasename state
+        if (sql.toLowerCase().includes('database()')) {
+            setDatabaseName(result[0]['database()']);
+            //console.log(databasename);
+        }
+
+
+      if (sql.toLowerCase().includes('select') && !sql.toLowerCase().includes('database()')) {
         if (result.length > 0) {
           toast.success("Query Executed Successfully!", {
             position: toast.POSITION.TOP_CENTER
@@ -68,7 +80,7 @@ const NewQueryBuilder = () => {
       console.log(err);
         // toast("Query Execution Failed!");
         if (err.response && err.response.status === 500) {
-            toast.warn("Please check your query and try again!", {
+            toast.error("Please check your query and try again!", {
                 position: toast.POSITION.TOP_CENTER
             });
         }
@@ -123,6 +135,8 @@ const NewQueryBuilder = () => {
     formattedQuery1 = `select ${selectedColumnString} from ${tableName} where ${formattedQuery1}`;
     console.log(formattedQuery1);
     runCustomQuery(formattedQuery1);
+    setFinalQuery(formattedQuery1);
+    // console.log(finalQuery);
     // empty the selectedColumns state
     setSelectedColumns([]);
   };
@@ -132,12 +146,20 @@ const NewQueryBuilder = () => {
     // in order to avoid a constant ping to the backend, we only want to run the query when the formattedQuery, tableName, or columnName changes
     if (!loading && formattedQuery === '' && tableName === '' && columnName === '') {
         runCustomQuery('show tables');
+        // console.log(runCustomQuery('select database()'));
       }
   }, [loading, formattedQuery, tableName, columnName]);
 
   useEffect(() => {
+    // Fetch database name on component mount
+    runCustomQuery('select database()');
+
+  }, []);
+
+  useEffect(() => {
     // Fetch table names on component mount
     runCustomQuery('show tables');
+
   }, []);
 
   return (
@@ -185,6 +207,16 @@ const NewQueryBuilder = () => {
       <QueryBuilder fields={fields} query={query} onQueryChange={handleQueryChange} />
 
       <button onClick={handleExecuteQuery}>Execute Query</button>
+
+      <SaveQueryButton
+        formattedQuery={finalQuery}
+        queryDescription={queryDescription}
+        databasename={databaseName}
+      />
+
+      <input type="text" value={queryDescription} onChange={(e) => setQueryDescription(e.target.value)} placeholder="Query Description" />
+
+        {/* input field to take query description */}
 
       {loading && <p>Loading...</p>}
 
