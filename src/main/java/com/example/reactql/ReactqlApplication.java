@@ -254,9 +254,167 @@ public class ReactqlApplication {
 
 		// routeRepo.saveAll(routes);
 
-		routeRepo.findByOrigin("Shanghai").forEach(route -> {
-			System.out.println(route);
-		});
+		// Rate rate = new Rate(1, routeRepo.findById(1).get(), "$1000");
+		// Rate rate2 = new Rate(2, routeRepo.findById(2).get(), "$4500");
+		// Rate rate3 = new Rate(3, routeRepo.findById(3).get(), "$3200");
+		// Rate rate4 = new Rate(4, routeRepo.findById(4).get(), "$5700");
+		// Rate rate5 = new Rate(5, routeRepo.findById(5).get(), "$6900");
+		// Rate rate6 = new Rate(6, routeRepo.findById(6).get(), "$2200");
+		// Rate rate7 = new Rate(7, routeRepo.findById(7).get(), "$4200");
+		// Rate rate8 = new Rate(8, routeRepo.findById(8).get(), "$1500");
+		// Rate rate9 = new Rate(9, routeRepo.findById(9).get(), "$7800");
+		// Rate rate10 = new Rate(10, routeRepo.findById(10).get(), "$3200");
+		// Rate rate11 = new Rate(11, routeRepo.findById(11).get(), "$5200");
+		// Rate rate12 = new Rate(12, routeRepo.findById(12).get(), "$6300");
+		// Rate rate13 = new Rate(13, routeRepo.findById(13).get(), "$4100");
+		// Rate rate14 = new Rate(14, routeRepo.findById(14).get(), "$1800");
+		// Rate rate15 = new Rate(15, routeRepo.findById(15).get(), "$8900");
+		// Rate rate16 = new Rate(16, routeRepo.findById(16).get(), "$4400");
+		// Rate rate17 = new Rate(17, routeRepo.findById(17).get(), "$3600");
+		// Rate rate18 = new Rate(18, routeRepo.findById(18).get(), "$5400");
+		// Rate rate19 = new Rate(19, routeRepo.findById(19).get(), "$2500");
+		// Rate rate20 = new Rate(20, routeRepo.findById(20).get(), "$7000");
+		// Rate rate21 = new Rate(21, routeRepo.findById(21).get(), "$1200");
+		// Rate rate22 = new Rate(22, routeRepo.findById(22).get(), "$6800");
+		// Rate rate23 = new Rate(23, routeRepo.findById(23).get(), "$3400");
+		// Rate rate24 = new Rate(24, routeRepo.findById(24).get(), "$4600");
+		// Rate rate25 = new Rate(25, routeRepo.findById(25).get(), "$5500");
+		// Rate rate26 = new Rate(26, routeRepo.findById(26).get(), "$4800");
+		// Rate rate27 = new Rate(27, routeRepo.findById(27).get(), "$2700");
+		// Rate rate28 = new Rate(28, routeRepo.findById(28).get(), "$7600");
+		// Rate rate29 = new Rate(29, routeRepo.findById(29).get(), "$1900");
+		// Rate rate30 = new Rate(30, routeRepo.findById(30).get(), "$3300");
+		// Rate rate31 = new Rate(31, routeRepo.findById(31).get(), "$4100");
+		// Rate rate32 = new Rate(32, routeRepo.findById(32).get(), "$5800");
+		// Rate rate33 = new Rate(33, routeRepo.findById(33).get(), "$6300");
+		// Rate rate34 = new Rate(34, routeRepo.findById(34).get(), "$5200");
+		// Rate rate35 = new Rate(35, routeRepo.findById(35).get(), "$1800");
+		// Rate rate36 = new Rate(36, routeRepo.findById(36).get(), "$8700");
+		// Rate rate37 = new Rate(37, routeRepo.findById(37).get(), "$4600");
+		// Rate rate38 = new Rate(38, routeRepo.findById(38).get(), "$3100");
+		// Rate rate39 = new Rate(39, routeRepo.findById(39).get(), "$4700");
+		// Rate rate40 = new Rate(40, routeRepo.findById(40).get(), "$6700");
+		// Rate rate41 = new Rate(41, routeRepo.findById(41).get(), "$3800");
+		// Rate rate42 = new Rate(42, routeRepo.findById(42).get(), "$2400");
+		// Rate rate43 = new Rate(43, routeRepo.findById(43).get(), "$6700");
+		// Rate rate44 = new Rate(44, routeRepo.findById(44).get(), "$5500");
+		// Rate rate45 = new Rate(45, routeRepo.findById(45).get(), "$1200");
+		// Rate rate46 = new Rate(46, routeRepo.findById(46).get(), "$4300");
+		// Rate rate47 = new Rate(47, routeRepo.findById(47).get(), "$5700");
+		// Rate rate48 = new Rate(48, routeRepo.findById(48).get(), "$3300");
+		// Rate rate49 = new Rate(49, routeRepo.findById(49).get(), "$7200");
+		// Rate rate50 = new Rate(50, routeRepo.findById(50).get(), "$2900");
+		// Rate rate51 = new Rate(51, routeRepo.findById(51).get(), "$6500");
+		// Rate rate52 = new Rate(52, routeRepo.findById(52).get(), "$1600");
+		// Rate rate53 = new Rate(53, routeRepo.findById(53).get(), "$3100");
+		// Rate rate54 = new Rate(54, routeRepo.findById(54).get(), "$4400");
+		// Rate rate55 = new Rate(55, routeRepo.findById(55).get(), "$3800");
+		// Rate rate56 = new Rate(56, routeRepo.findById(56).get(), "$8200");
+		// Rate rate57 = new Rate(57, routeRepo.findById(57).get(), "$6700");
+		// Rate rate58 = new Rate(58, routeRepo.findById(58).get(), "$1500");
+		// Rate rate59 = new Rate(59, routeRepo.findById(59).get(), "$5300");
+		// Rate rate60 = new Rate(60, routeRepo.findById(60).get(), "$3900");
+		// Rate rate61 = new Rate(61, routeRepo.findById(61).get(), "$4800");
+		// Rate rate62 = new Rate(62, routeRepo.findById(62).get(), "$3500");
+		// Rate rate63 = new Rate(63, routeRepo.findById(63).get(), "$6900");
+		// Rate rate64 = new Rate(64, routeRepo.findById(64).get(), "$5100");
+		// Rate rate65 = new Rate(65, routeRepo.findById(65).get(), "$2300");
+		// Rate rate66 = new Rate(66, routeRepo.findById(66).get(), "$5400");
+		// Rate rate67 = new Rate(67, routeRepo.findById(67).get(), "$4200");
+		// Rate rate68 = new Rate(68, routeRepo.findById(68).get(), "$6200");
+		// Rate rate69 = new Rate(69, routeRepo.findById(69).get(), "$7400");
+		// Rate rate70 = new Rate(70, routeRepo.findById(70).get(), "$3200");
+		// Rate rate71 = new Rate(71, routeRepo.findById(71).get(), "$1600");
+		// Rate rate72 = new Rate(72, routeRepo.findById(72).get(), "$6800");
+		// Rate rate73 = new Rate(73, routeRepo.findById(73).get(), "$2100");
+		// Rate rate74 = new Rate(74, routeRepo.findById(74).get(), "$4300");
+		// Rate rate75 = new Rate(75, routeRepo.findById(75).get(), "$5700");
+		// Rate rate76 = new Rate(76, routeRepo.findById(76).get(), "$4700");
+		// Rate rate77 = new Rate(77, routeRepo.findById(77).get(), "$6600");
+		// Rate rate78 = new Rate(78, routeRepo.findById(78).get(), "$3600");
+		// Rate rate79 = new Rate(79, routeRepo.findById(79).get(), "$5000");
+		// Rate rate80 = new Rate(80, routeRepo.findById(80).get(), "$2900");
+		// Rate rate81 = new Rate(81, routeRepo.findById(81).get(), "$6500");
+		// Rate rate82 = new Rate(82, routeRepo.findById(82).get(), "$1800");
+		// Rate rate83 = new Rate(83, routeRepo.findById(83).get(), "$3200");
+		// Rate rate84 = new Rate(84, routeRepo.findById(84).get(), "$4500");
+		// Rate rate85 = new Rate(85, routeRepo.findById(85).get(), "$3900");
+		// Rate rate86 = new Rate(86, routeRepo.findById(86).get(), "$8600");
+		// Rate rate87 = new Rate(87, routeRepo.findById(87).get(), "$6700");
+		// Rate rate88 = new Rate(88, routeRepo.findById(88).get(), "$1500");
+		// Rate rate89 = new Rate(89, routeRepo.findById(89).get(), "$5300");
+		// Rate rate90 = new Rate(90, routeRepo.findById(90).get(), "$2800");
+		// Rate rate91 = new Rate(91, routeRepo.findById(91).get(), "$4100");
+		// Rate rate92 = new Rate(92, routeRepo.findById(92).get(), "$6200");
+		// Rate rate93 = new Rate(93, routeRepo.findById(93).get(), "$2100");
+		// Rate rate94 = new Rate(94, routeRepo.findById(94).get(), "$4400");
+		// Rate rate95 = new Rate(95, routeRepo.findById(95).get(), "$5900");
+		// Rate rate96 = new Rate(96, routeRepo.findById(96).get(), "$4800");
+		// Rate rate97 = new Rate(97, routeRepo.findById(97).get(), "$2400");
+		// Rate rate98 = new Rate(98, routeRepo.findById(98).get(), "$7200");
+		// Rate rate99 = new Rate(99, routeRepo.findById(99).get(), "$1100");
+		// Rate rate100 = new Rate(100, routeRepo.findById(100).get(), "$3700");
+		// Rate rate101 = new Rate(101, routeRepo.findById(101).get(), "$4400");
+		// Rate rate102 = new Rate(102, routeRepo.findById(102).get(), "$4700");
+		// Rate rate103 = new Rate(103, routeRepo.findById(103).get(), "$2300");
+		// Rate rate104 = new Rate(104, routeRepo.findById(104).get(), "$3500");
+		// Rate rate105 = new Rate(105, routeRepo.findById(105).get(), "$1800");
+		// Rate rate106 = new Rate(106, routeRepo.findById(106).get(), "$8500");
+		// Rate rate107 = new Rate(107, routeRepo.findById(107).get(), "$4600");
+		// Rate rate108 = new Rate(108, routeRepo.findById(108).get(), "$3100");
+		// Rate rate109 = new Rate(109, routeRepo.findById(109).get(), "$4800");
+		// Rate rate110 = new Rate(110, routeRepo.findById(110).get(), "$6600");
+		// Rate rate111 = new Rate(111, routeRepo.findById(111).get(), "$3800");
+		// Rate rate112 = new Rate(112, routeRepo.findById(112).get(), "$2500");
+		// Rate rate113 = new Rate(113, routeRepo.findById(113).get(), "$6800");
+		// Rate rate114 = new Rate(114, routeRepo.findById(114).get(), "$5500");
+		// Rate rate115 = new Rate(115, routeRepo.findById(115).get(), "$1400");
+		// Rate rate116 = new Rate(116, routeRepo.findById(116).get(), "$4100");
+		// Rate rate117 = new Rate(117, routeRepo.findById(117).get(), "$5800");
+		// Rate rate118 = new Rate(118, routeRepo.findById(118).get(), "$7200");
+		// Rate rate119 = new Rate(119, routeRepo.findById(119).get(), "$2100");
+		// Rate rate120 = new Rate(120, routeRepo.findById(120).get(), "$6700");
+		// Rate rate121 = new Rate(121, routeRepo.findById(121).get(), "$1600");
+		// Rate rate122 = new Rate(122, routeRepo.findById(122).get(), "$6900");
+		// Rate rate123 = new Rate(123, routeRepo.findById(123).get(), "$2900");
+		// Rate rate124 = new Rate(124, routeRepo.findById(124).get(), "$3200");
+		// Rate rate125 = new Rate(125, routeRepo.findById(125).get(), "$3100");
+		// Rate rate126 = new Rate(126, routeRepo.findById(126).get(), "$2600");
+		// Rate rate127 = new Rate(127, routeRepo.findById(127).get(), "$7500");
+		// Rate rate128 = new Rate(128, routeRepo.findById(128).get(), "$2000");
+		// Rate rate129 = new Rate(129, routeRepo.findById(129).get(), "$3500");
+		// Rate rate130 = new Rate(130, routeRepo.findById(130).get(), "$4900");
+		// Rate rate131 = new Rate(131, routeRepo.findById(131).get(), "$6500");
+		// Rate rate132 = new Rate(132, routeRepo.findById(132).get(), "$1400");
+		// Rate rate133 = new Rate(133, routeRepo.findById(133).get(), "$2800");
+		// Rate rate134 = new Rate(134, routeRepo.findById(134).get(), "$4200");
+		// Rate rate135 = new Rate(135, routeRepo.findById(135).get(), "$3700");
+		// Rate rate136 = new Rate(136, routeRepo.findById(136).get(), "$8200");
+		// Rate rate137 = new Rate(137, routeRepo.findById(137).get(), "$6800");
+		// Rate rate138 = new Rate(138, routeRepo.findById(138).get(), "$1500");
+		// Rate rate139 = new Rate(139, routeRepo.findById(139).get(), "$5300");
+		// Rate rate140 = new Rate(140, routeRepo.findById(140).get(), "$3900");
+
+		// List<Rate> rates = List.of(rate, rate2, rate3, rate4, rate5, rate6, rate7, rate8, rate9, rate10,
+		// 		rate11, rate12, rate13, rate14, rate15, rate16, rate17, rate18, rate19, rate20, rate21,
+		// 		rate22, rate23, rate24, rate25, rate26, rate27, rate28, rate29, rate30, rate31, rate32,
+		// 		rate33, rate34, rate35, rate36, rate37, rate38, rate39, rate40, rate41, rate42, rate43,
+		// 		rate44, rate45, rate46, rate47, rate48, rate49, rate50, rate51, rate52, rate53, rate54,
+		// 		rate55, rate56, rate57, rate58, rate59, rate60, rate61, rate62, rate63, rate64, rate65,
+		// 		rate66, rate67, rate68, rate69, rate70, rate71, rate72, rate73, rate74, rate75, rate76,
+		// 		rate77, rate78, rate79, rate80, rate81, rate82, rate83, rate84, rate85, rate86, rate87,
+		// 		rate88, rate89, rate90, rate91, rate92, rate93, rate94, rate95, rate96, rate97, rate98,
+		// 		rate99, rate100, rate101, rate102, rate103, rate104, rate105, rate106, rate107, rate108,
+		// 		rate109, rate110, rate111, rate112, rate113, rate114, rate115, rate116, rate117, rate118,
+		// 		rate119, rate120, rate121, rate122, rate123, rate124, rate125, rate126, rate127, rate128,
+		// 		rate129, rate130, rate131, rate132, rate133, rate134, rate135, rate136, rate137, rate138,
+		// 		rate139, rate140);
+
+		// rateRepo.saveAll(rates);
+
+
+
+		// rateRepo.findAll().forEach(System.out::println);
 
 	}
 
