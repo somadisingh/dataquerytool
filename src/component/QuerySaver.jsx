@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 
-const SaveQueryButton = ({ formattedQuery, queryDescription, databasename }) => {
+const SaveQueryButton = ({ formattedQuery, queryDescription, databasename, table_name }) => {
     const [saving, setSaving] = useState(false);
 
     const handleSaveQuery = async () => {
@@ -11,14 +11,16 @@ const SaveQueryButton = ({ formattedQuery, queryDescription, databasename }) => 
         const data = {
             query: formattedQuery, 
             description: queryDescription,
-            dbname: databasename
+            dbname: databasename,
+            table_name: table_name
         }
-        //console.log(data);
+        console.log(data);
         try {
             const response = await axios.post('http://localhost:8080/api/query/save', { 
                 query: formattedQuery, 
                 description: queryDescription,
-                dbname: databasename
+                dbname: databasename,
+                table_name: table_name
              });
             console.log(data.query);
             const result = response.data;
