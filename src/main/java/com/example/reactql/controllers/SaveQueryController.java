@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
-import com.example.reactql.dao.QueryRepo;
+
 import com.example.reactql.entities.Save_Query;
+import com.example.reactql.repo.QueryRepo;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMethod;
 // import org.slf4j.Logger;

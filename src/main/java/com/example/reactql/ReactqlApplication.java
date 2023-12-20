@@ -2,20 +2,36 @@ package com.example.reactql;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.context.ApplicationContext;
-import com.example.reactql.dao.*;
-import com.example.reactql.entities.*;
-import java.util.List;
+
+// import com.example.reactql.repo.TableInfoRepo;
+// import com.example.reactql.entities.*;
+// import com.example.reactql.repo.*;
+import com.example.reactql.repo.UserInfoRepo;
+import com.example.reactql.entities.User_Info;
+
+// import java.util.List;
 
 @SpringBootApplication
 public class ReactqlApplication {
 
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(ReactqlApplication.class, args);
-		CarrierRepo carrierRepo = context.getBean(CarrierRepo.class);
-		RouteRepo routeRepo = context.getBean(RouteRepo.class);
-		RateRepo rateRepo = context.getBean(RateRepo.class);
+		// CarrierRepo carrierRepo = context.getBean(CarrierRepo.class);
+		// RouteRepo routeRepo = context.getBean(RouteRepo.class);
+		// RateRepo rateRepo = context.getBean(RateRepo.class);
 		//customqueryRepo customqueryRepo = context.getBean(customqueryRepo.class);
+		// UserInfoRepo userInfoRepo = context.getBean(UserInfoRepo.class);
+
+		// User_Info user1 = new User_Info("adminuser", "password", "admin");
+		// userInfoRepo.save(user1);
+		// System.out.println("Admin user saved successfully: " + user1);
+
+		// User_Info user2 = new User_Info("normaluser", "passkey", "normal");
+		// userInfoRepo.save(user2);
+		// System.out.println("Normal user saved successfully: " + user2);
+
 
 
 		// Carrier carrier1 = new Carrier(1, "DHL", "Air");

@@ -1,4 +1,4 @@
-package com.example.reactql.dao;
+package com.example.reactql.repo;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

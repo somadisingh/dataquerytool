@@ -1,4 +1,4 @@
-package com.example.reactql.dao;
+package com.example.reactql.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.reactql.entities.Save_Query;

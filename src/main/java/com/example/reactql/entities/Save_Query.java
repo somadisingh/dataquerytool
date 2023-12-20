@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
-import jakarta.persistence.Lob;
+// import jakarta.persistence.Lob;
 
 @Entity
 public class Save_Query {
@@ -23,16 +23,20 @@ public class Save_Query {
     @Column(nullable = false, name="DatabaseName")
     private String dbname;
 
+    @Column(nullable = false, name="Tablename")
+    private String table_name;
+
     public Save_Query() {
         super();
     }
 
-    public Save_Query(Long id, String query, String description, String dbname) {
+    public Save_Query(Long id, String query, String description, String dbname, String table_name) {
         super();
         this.id = id;
         this.query = query;
         this.description = description;
         this.dbname = dbname;
+        this.table_name = table_name;
 
     }   
 
@@ -68,9 +72,17 @@ public class Save_Query {
         return dbname;
     }
 
+    public void settable_name(String table_name) {
+        this.table_name = table_name;
+    }
+
+    public String gettable_name() {
+        return table_name;
+    }
+
     @Override
     public String toString() {
-        return "Save_Query Details: id=" + id + ", query=" + query + ", description=" + description + "\n";
+        return "Save_Query Details: id=" + id + ", query=" + query + ", description=" + description + ", dbname=" + dbname + ", table_name=" + table_name + "]";
     }
 
     
