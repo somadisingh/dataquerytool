@@ -1,4 +1,4 @@
-# Data Query Tool
+# ReactQL: A Data Query Tool
 Data Query Tool using React, Spring and MySQL
 
 ## Create an User-Friendly interface to manage SQL queries and provide a mechanism for the team to execute the queries.
