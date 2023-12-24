@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+// App.js
+import { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+
 import LoginPage from './components/LoginPage';
 import AdminDash from './components/AdminDash';
 import NormalDash from './components/NormalDash';
@@ -13,20 +16,50 @@ const App = () => {
 
   const handleLogout = () => {
     setUserType(null);
+    return <Navigate to="/" replace />;
   };
 
   return (
-    <div>
-      {userType ?(
-        userType === 'admin' ? (
-          <AdminDash onLogout={handleLogout} />
-        ) : (
-          <NormalDash onLogout={handleLogout} />
-        )
-      ) : (
-        <LoginPage onLogin={handleLogin} />
-      )}
-    </div>
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            userType ? (
+              userType === 'admin' ? (
+                <Navigate to="/admin" />
+              ) : (
+                <Navigate to="/normal" />
+              )
+            ) : (
+              <LoginPage onLogin={handleLogin} />
+            )
+          }
+        />
+
+        <Route
+          path="/admin"
+          element={
+            userType === 'admin' ? (
+              <AdminDash onLogout={handleLogout} />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/normal"
+          element={
+            userType === 'normal' ? (
+              <NormalDash onLogout={handleLogout} />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+      </Routes>
+    </Router>
   );
 };
 
