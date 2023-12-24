@@ -6,13 +6,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const NewQueryBuilder = () => {
-  const [query, setQuery] = useState({
-    combinator: 'and',
-    rules: [
-      { field: '', operator: '=', value: '' },
-    ],
-  });
-  const [formattedQuery, setFormattedQuery] = useState(formatQuery(query, 'sql'));
+//   const [query, setQuery] = useState({
+//     combinator: 'and',
+//     rules: [
+//       { field: '', operator: '=', value: '' },
+//     ],
+//   });
+  //const [formattedQuery, setFormattedQuery] = useState(formatQuery(query, 'sql'));
   const [tableName, setTableName] = useState();
   const [columnName, setColumnName] = useState();
   const [result, setResult] = useState([]);
@@ -80,10 +80,10 @@ const NewQueryBuilder = () => {
     }
   };
 
-  const handleQueryChange = (q) => {
-    setQuery(q);
-    setFormattedQuery(formatQuery(q, 'sql'));
-  };
+//   const handleQueryChange = (q) => {
+//     setQuery(q);
+//     setFormattedQuery(formatQuery(q, 'sql'));
+//   };
 
   const handleRadioChange = (selectedRow) => {
     setSelectedRow(selectedRow);
@@ -95,6 +95,7 @@ const NewQueryBuilder = () => {
         console.log(presetQuery);
         let value = presetQuery.substring(presetQuery.indexOf('from') + 5, presetQuery.indexOf('where') - 1);
         console.log(value);
+        setFinalQuery(presetQuery);
     }
   };
 
@@ -109,35 +110,35 @@ const NewQueryBuilder = () => {
       console.log(selectedColumns);
   };
 
-  const handleExecuteQuery = () => {
-    let formattedQuery1 = formattedQuery.substring(1, formattedQuery.length - 1);
-    const selectedColumnString = selectedColumns.join(', ');
-    formattedQuery1 = `select ${selectedColumnString} from ${tableName} where ${formattedQuery1}`;
-    console.log(formattedQuery1);
-    runCustomQuery(formattedQuery1);
-    setFinalQuery(formattedQuery1);
-    // console.log(finalQuery);
-    // empty the selectedColumns state
-    setSelectedColumns([]);
+//   const handleExecuteQuery = () => {
+//     let formattedQuery1 = formattedQuery.substring(1, formattedQuery.length - 1);
+//     const selectedColumnString = selectedColumns.join(', ');
+//     formattedQuery1 = `select ${selectedColumnString} from ${tableName} where ${formattedQuery1}`;
+//     console.log(formattedQuery1);
+//     runCustomQuery(formattedQuery1);
+//     setFinalQuery(formattedQuery1);
+//     // console.log(finalQuery);
+//     // empty the selectedColumns state
+//     setSelectedColumns([]);
 
-  };
+//   };
 
   const handleRunButtonClick = () => {
     if (selectedRow !== null) {
         const selectedQuery = result[0].query;
         // console.log(selectedQuery);
         // need to update the columns also alongwith the query
-        setFinalQuery(selectedQuery);
-        // displayResults(finalQuery);
+        //setFinalQuery(selectedQuery);
+        displayResults(finalQuery);
     }};
 
-    useEffect(() => { // the reason to use this hook is to avoid the error of finalQuery being empty
-        if (finalQuery !== '') {
-            console.log(finalQuery);
-            displayResults(finalQuery);
-        }
-    }
-    , [finalQuery]);
+    // useEffect(() => { // the reason to use this hook is to avoid the error of finalQuery being empty
+    //     if (finalQuery !== '') {
+    //         console.log(finalQuery);
+    //         displayResults(finalQuery);
+    //     }
+    // }
+    // , [finalQuery]);
 
   return (
     <div>
@@ -154,7 +155,7 @@ const NewQueryBuilder = () => {
             theme="colored"
          />
 
-      <label htmlFor="columnName">Select Columns:</label>
+      {/* <label htmlFor="columnName">Select Columns:</label>
       <div>
         {columnNames.map((columnName) => (
           <div key={columnName}>
@@ -168,12 +169,12 @@ const NewQueryBuilder = () => {
             <label htmlFor={columnName}>{columnName}</label>
           </div>
         ))}
-      </div>
+      </div> */}
 
 
-      <QueryBuilder fields={fields} query={query} onQueryChange={handleQueryChange} />
+      {/* <QueryBuilder fields={fields} query={query} onQueryChange={handleQueryChange} /> */}
 
-      <button onClick={handleExecuteQuery}>Execute Query</button>
+      {/*<button onClick={handleExecuteQuery}>Execute Query</button>*/}
 
         {/* input field to take query description */}
 
