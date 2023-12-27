@@ -12,12 +12,14 @@ import com.example.reactql.entities.Save_Query;
 import com.example.reactql.repo.QueryRepo;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.DeleteMapping;
 // import org.slf4j.Logger;
 // import org.slf4j.LoggerFactory;
 
 
-@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", methods = {RequestMethod.DELETE, RequestMethod.POST})
 @RestController
 @RequestMapping("/api/query")
 public class SaveQueryController {
@@ -38,6 +40,19 @@ public class SaveQueryController {
         } catch (Exception e) {
             System.out.println("sorry");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving query: " + e.toString());
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String>deleteQuery(@PathVariable Long id) {
+        try {
+            queryRepo.deleteById(id);
+            return ResponseEntity.ok("Query deleted successfully!");
+
+            
+        } catch (Exception e) {
+            System.out.println("sorry");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting query: " + e.toString());
         }
     }
 }
