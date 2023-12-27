@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 
-const SaveQueryButton = ({ formattedQuery, queryDescription, databasename, table_name }) => {
+const SaveQueryButton = ({ formattedQuery, queryDescription, databasename, table_name, runCustomQuery }) => {
     const [saving, setSaving] = useState(false);
 
     const handleSaveQuery = async () => {
@@ -26,9 +26,11 @@ const SaveQueryButton = ({ formattedQuery, queryDescription, databasename, table
             const result = response.data;
             console.log(result);
             if (result) {
+                runCustomQuery('select * from save_query');
                 // alert('Query saved successfully!');
                 toast.success("Query Saved Successfully!", {
                     position: toast.POSITION.TOP_CENTER
+
                   });
             }
         } catch (err) {

@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import SaveQueryButton from './QuerySaver';
 import { CSVLink } from "react-csv";
 import Papa from 'papaparse';
+//import validateSqlQuery from './QueryValidator';
 
 const NewQueryBuilder = () => {
   const [query, setQuery] = useState({
@@ -29,6 +30,9 @@ const NewQueryBuilder = () => {
   const [finalQuery, setFinalQuery] = useState('');
   const [finaltable, setFinalTable] = useState('');
   const [csvData, setCsvData] = useState([]);
+  const [savedQueries, setSavedQueries] = useState([]);
+  const [selectedQueryId, setSelectedQueryId] = useState('');
+  //const [validationResult, setValidationResult] = useState(null);
 
   const runCustomQuery = async (sql) => {
     /*
@@ -42,8 +46,15 @@ const NewQueryBuilder = () => {
       setLoading(true);
       const response = await axios.post('http://localhost:8080/api/customquery/execute', { sql });
       const result = response.data;
-      if (!sql.toLowerCase().includes('show tables') && !sql.toLowerCase().includes('describe') && !sql.toLowerCase().includes('database()')) setResult(result);
-      if (sql.toLowerCase().includes('show tables')) setTableNames(result);  
+      if (!sql.toLowerCase().includes('show tables') && !sql.toLowerCase().includes('describe') && !sql.toLowerCase().includes('database()') && !sql.toLowerCase().includes('save_query')) {
+        setResult(result);
+        console.log(result[0]);
+      }
+      if (sql.toLowerCase().includes('show tables')) setTableNames(result); 
+      if (sql.toLowerCase().includes('save_query')) {
+        //console.log(result);
+        setSavedQueries(result);
+      }
       if (sql.toLowerCase().includes('describe')) {
         setColumnNames(result.map((column) => column.Field));
         const fields = result.map((column) => ({ name: column.Field, label: column.Field }));
@@ -54,7 +65,7 @@ const NewQueryBuilder = () => {
       }
 
 
-      if (sql.toLowerCase().includes('select') && !sql.toLowerCase().includes('database()')) {
+      if (sql.toLowerCase().includes('select') && !sql.toLowerCase().includes('database()') && !sql.toLowerCase().includes('save_query')) {
         if (result.length > 0) {
           toast.success("Query Executed Successfully!", {
             position: toast.POSITION.TOP_CENTER
@@ -131,8 +142,8 @@ const NewQueryBuilder = () => {
     formattedQuery1 = `select ${selectedColumnString} from ${tableName} where ${formattedQuery1}`;
     setFinalTable(tableName);
     console.log(formattedQuery1);
-    runCustomQuery(formattedQuery1);
     setFinalQuery(formattedQuery1);
+    runCustomQuery(formattedQuery1);
     setSelectedColumns([]);
   };
 
@@ -159,6 +170,29 @@ const NewQueryBuilder = () => {
     }
   };
 
+  const handleDeleteQuery = async () => {
+    /*
+    This function is used to delete a query. It takes in an id as a parameter and sends a DELETE request to the backend.
+    The backend will then delete the query with the corresponding id. It then runs a custom query to show all the queries and sets the result state variable to the result.
+      */
+    try {
+      setLoading(true);
+      const response = await axios.delete(`http://localhost:8080/api/query/delete/${selectedQueryId}`);
+      console.log(response);
+      runCustomQuery('select * from save_query');
+      toast.success('Query deleted successfully!', {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } catch (err) {
+      console.log(err);
+      toast.error('Error deleting query. Please try again.', {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     // in order to avoid a constant ping to the backend, we only want to run the query when the formattedQuery, tableName, or columnName changes
     if (!loading && formattedQuery === '' && tableName === '' && columnName === '') {
@@ -167,11 +201,16 @@ const NewQueryBuilder = () => {
   }, [loading, formattedQuery, tableName, columnName]);
 
   useEffect(() => {
+    console.log('hello');
     runCustomQuery('select database()');
   }, []);
 
   useEffect(() => {
     runCustomQuery('show tables');
+  }, []);
+
+  useEffect(() => {
+    runCustomQuery('select * from save_query');
   }, []);
 
   return (
@@ -225,11 +264,34 @@ const NewQueryBuilder = () => {
         queryDescription={queryDescription}
         databasename={databaseName}
         table_name={finaltable}
+        runCustomQuery={runCustomQuery}
       />
 
       <input type="text" value={queryDescription} onChange={(e) => setQueryDescription(e.target.value)} placeholder="Query Description" />
 
         {/* input field to take query description */}
+      <br/>
+      {/* Drop-down menu for saved queries */}
+      <label htmlFor="savedQueries">Select Saved Query:</label>
+      <select
+        id="savedQueries"
+        value={selectedQueryId}
+        onChange={(e) => setSelectedQueryId(e.target.value)}
+      >
+        <option value="" disabled>
+          Select a saved query
+        </option>
+        {savedQueries.map((query) => (
+          <option key={query.id} value={query.id}>
+            {query.description} - {query.query}
+          </option>
+        ))}
+      </select>
+
+      {/* Delete button */}
+      <button onClick={handleDeleteQuery} disabled={!selectedQueryId}>
+        Delete Query
+      </button>
 
       {loading && <p>Loading...</p>}
       {result.length > 0 && (
