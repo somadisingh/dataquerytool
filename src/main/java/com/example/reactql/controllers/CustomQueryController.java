@@ -1,6 +1,6 @@
 package com.example.reactql.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +19,7 @@ public class CustomQueryController {
 
     private final CustomQueryService customQueryService;
 
-    @Autowired
+   // @Autowired
     public CustomQueryController(CustomQueryService customQueryService) {
         this.customQueryService = customQueryService;
     }

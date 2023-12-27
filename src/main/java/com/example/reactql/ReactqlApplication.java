@@ -2,14 +2,14 @@ package com.example.reactql;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
-import org.springframework.context.ApplicationContext;
+// import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+// import org.springframework.context.ApplicationContext;
 
 // import com.example.reactql.repo.TableInfoRepo;
 // import com.example.reactql.entities.*;
 // import com.example.reactql.repo.*;
-import com.example.reactql.repo.UserInfoRepo;
-import com.example.reactql.entities.User_Info;
+// import com.example.reactql.repo.UserInfoRepo;
+// import com.example.reactql.entities.User_Info;
 
 // import java.util.List;
 
@@ -17,7 +17,9 @@ import com.example.reactql.entities.User_Info;
 public class ReactqlApplication {
 
 	public static void main(String[] args) {
-		ApplicationContext context = SpringApplication.run(ReactqlApplication.class, args);
+		// ApplicationContext context = SpringApplication.run(ReactqlApplication.class, args);
+		SpringApplication.run(ReactqlApplication.class, args);
+		System.out.println("Everything is fine");
 		// CarrierRepo carrierRepo = context.getBean(CarrierRepo.class);
 		// RouteRepo routeRepo = context.getBean(RouteRepo.class);
 		// RateRepo rateRepo = context.getBean(RateRepo.class);

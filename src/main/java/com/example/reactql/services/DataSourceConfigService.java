@@ -42,6 +42,7 @@ public class DataSourceConfigService {
 
         // Replace the existing datasource with the new one
         dataSource = newDataSource;
+        System.out.println("datasource: " + dataSource);
     }
 }
 
