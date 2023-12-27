@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CSVLink } from "react-csv";
+import Papa from 'papaparse';
 
 const SavedQuery = () => {
 
@@ -10,6 +12,7 @@ const SavedQuery = () => {
   const [loading, setLoading] = useState(false);
   const [finalQuery, setFinalQuery] = useState('');
   const [selectedRow, setSelectedRow] = useState(null);
+  const [csvData, setCsvData] = useState([]);
 
 
   useEffect(() => {
@@ -68,9 +71,28 @@ const SavedQuery = () => {
 
   const handleRunButtonClick = () => {
     if (selectedRow !== null) {
-        const selectedQuery = result[0].query;
+        //const selectedQuery = result[0].query;
         displayResults(finalQuery);
     }};
+
+    useEffect(() => {
+      setCsvData(nresult);
+    }, [nresult]);
+
+    const handleDownloadCSV = () => {
+      const csvContent = Papa.unparse(csvData);
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', selectedRow.description + '.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    };
 
 
   return (
@@ -122,29 +144,38 @@ const SavedQuery = () => {
         <button onClick={handleRunButtonClick}>Run</button>
       )}
 
-{nresult.length > 0 && (
-        <div>
-          <h4>Result</h4>
-          <table>
-            <thead>
-              <tr>
-                {Object.keys(nresult[0]).map((key) => (
-                  <th key={key}>{key}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {nresult.map((row, index) => (
-                <tr key={index}>
-                  {Object.values(row).map((value, index) => (
-                    <td key={index}>{value}</td>
+    {nresult.length > 0 && (
+                <div>
+                  <button onClick={handleDownloadCSV}>Download CSV</button>
+                  <table>
+                    {/* ... Your existing code for displaying the table ... */}
+                  </table>
+                </div>
+              )}
+
+    {nresult.length > 0 && (
+            <div>
+              <h4>Result</h4>
+              <table>
+                <thead>
+                  <tr>
+                    {Object.keys(nresult[0]).map((key) => (
+                      <th key={key}>{key}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {nresult.map((row, index) => (
+                    <tr key={index}>
+                      {Object.values(row).map((value, index) => (
+                        <td key={index}>{value}</td>
+                      ))}
+                    </tr>
                   ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+                </tbody>
+              </table>
+            </div>
+          )}
     </div>
   );
 };

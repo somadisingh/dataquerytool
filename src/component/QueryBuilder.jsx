@@ -5,6 +5,8 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SaveQueryButton from './QuerySaver';
+import { CSVLink } from "react-csv";
+import Papa from 'papaparse';
 
 // const fields = [
 //   { name: 'carriername', label: 'Carrier Name' },
@@ -36,6 +38,7 @@ const NewQueryBuilder = () => {
   const [queryDescription, setQueryDescription] = useState('');
   const [finalQuery, setFinalQuery] = useState('');
   const [finaltable, setFinalTable] = useState('');
+  const [csvData, setCsvData] = useState([]);
 
   // const notify = () => toast("Query Executed Successfully!");
 
@@ -145,6 +148,25 @@ const NewQueryBuilder = () => {
   };
 
   useEffect(() => {
+    setCsvData(result);
+  }, [result]);
+
+  const handleDownloadCSV = () => {
+    const csvContent = Papa.unparse(csvData);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download','result.csv');
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
+  useEffect(() => {
     // Initial query execution on component mount
     // in order to avoid a constant ping to the backend, we only want to run the query when the formattedQuery, tableName, or columnName changes
     if (!loading && formattedQuery === '' && tableName === '' && columnName === '') {
@@ -223,7 +245,14 @@ const NewQueryBuilder = () => {
         {/* input field to take query description */}
 
       {loading && <p>Loading...</p>}
-
+      {result.length > 0 && (
+                <div>
+                  <button onClick={handleDownloadCSV}>Download CSV</button>
+                  <table>
+                    {/* ... Your existing code for displaying the table ... */}
+                  </table>
+                </div>
+              )}
       {result.length > 0 && (
         <div>
           <h4>Result</h4>
