@@ -8,16 +8,6 @@ import SaveQueryButton from './QuerySaver';
 import { CSVLink } from "react-csv";
 import Papa from 'papaparse';
 
-// const fields = [
-//   { name: 'carriername', label: 'Carrier Name' },
-//   { name: 'origin', label: 'Origin' },
-//   { name: 'destination', label: 'Destination' },
-//   { name: 'mode', label: 'Mode' },
-//   { name: 'routeId', label: 'Route Id' },
-//   { name: 'rateId', label: 'Rate Id' },
-//   { name: 'mode', label: 'Mode' },
-// ];
-
 const NewQueryBuilder = () => {
   const [query, setQuery] = useState({
     combinator: 'and',
@@ -40,33 +30,28 @@ const NewQueryBuilder = () => {
   const [finaltable, setFinalTable] = useState('');
   const [csvData, setCsvData] = useState([]);
 
-  // const notify = () => toast("Query Executed Successfully!");
-
   const runCustomQuery = async (sql) => {
+    /*
+    This function is used to run a custom query. It takes in a sql string as a parameter and sends a POST request to the backend.
+    The backend will then execute the query and return the result. The result is then set to the result state variable.
+    It has several conditions to check for certain keywords in the query. If the query contains 'show tables', it will set the tableNames state variable to the result.
+    If the query contains 'describe', it will set the columnNames state variable to the result. If the query contains 'database()', it will set the databaseName state variable to the result.
+    Finally if the query contains 'select', it will set the result state variable to the result.
+     */
     try {
       setLoading(true);
       const response = await axios.post('http://localhost:8080/api/customquery/execute', { sql });
       const result = response.data;
-      //console.log(result);
-        // If the query is not 'show tables' or 'describe'or 'select database()' update the result state
       if (!sql.toLowerCase().includes('show tables') && !sql.toLowerCase().includes('describe') && !sql.toLowerCase().includes('database()')) setResult(result);
-
-      // If the query is 'show tables', update the tableNames state
       if (sql.toLowerCase().includes('show tables')) setTableNames(result);  
-
-      // If the query is 'describe', update the columnNames state
       if (sql.toLowerCase().includes('describe')) {
-        console.log(result);
         setColumnNames(result.map((column) => column.Field));
         const fields = result.map((column) => ({ name: column.Field, label: column.Field }));
         setFields(fields);
       }
-
-        // If the query is 'select database()', update the databasename state
-        if (sql.toLowerCase().includes('database()')) {
-            setDatabaseName(result[0]['database()']);
-            //console.log(databasename);
-        }
+      if (sql.toLowerCase().includes('database()')) {
+          setDatabaseName(result[0]['database()']);
+      }
 
 
       if (sql.toLowerCase().includes('select') && !sql.toLowerCase().includes('database()')) {
@@ -82,7 +67,6 @@ const NewQueryBuilder = () => {
     }
     } catch (err) {
       console.log(err);
-        // toast("Query Execution Failed!");
         if (err.response && err.response.status === 500) {
             toast.error("Please check your query and try again!", {
                 position: toast.POSITION.TOP_CENTER
@@ -94,24 +78,25 @@ const NewQueryBuilder = () => {
   };
 
   const handleQueryChange = (q) => {
+    /*
+    This function is used to handle the query change. It takes in a query object as a parameter and sets the query state variable to the query object.
+    It also formats the query object and sets the formattedQuery state variable to the formatted query. This function is part of react-querybuilder.
+     */
     setQuery(q);
     setFormattedQuery(formatQuery(q, 'sql'));
   };
 
   const handleTableChange = async (t) => {
+    /*
+    This function is used to handle the table change. It takes in a table object as a parameter and sets the tableName state variable to the table object.
+    It also runs a custom query to describe the table and set the columnNames state variable to the result. It also sets the fields state variable to the result.
+     */
     const selectedTable = t.target.value;
     setTableName(selectedTable);
-    //console.log(selectedTable);
-    // Fetch column names for the selected table
-    // console.log("hello"+runCustomQuery(`describe ${selectedTable}`));
-    //runCustomQuery(`describe ${selectedTable}`)
     try {
         setLoading(true);
-        // console.log("hello "+selectedTable);
         const response = await runCustomQuery(`describe ${selectedTable}`);
-        // console.lo//g(response);
         const columns = response.data.map((column) => column.Field);
-        //console.log("are you there?");
         setColumnNames(columns);
         const fields = result.map((column) => ({ name: column.Field, label: column.Field }));
         setFields(fields);
@@ -123,35 +108,43 @@ const NewQueryBuilder = () => {
   };
 
   const handleColumnChange = (c) => {
+    /*
+    This function works in tandem with radio buttons to select columns. It takes in a column object as a parameter and sets the selectedColumns state variable to the column object.
+    It also checks if the selectedColumns state variable includes the column object. If it does, it will filter the selectedColumns state variable to remove the column object.
+    If it does not, it will add the column object to the selectedColumns state variable.
+     */
     const selectedColumn = c.target.value;
-    // setColumnName(selectedColumn);
     if (selectedColumns.includes(selectedColumn)) {
         setSelectedColumns(selectedColumns.filter((col) => col !== selectedColumn));
       } else {
         setSelectedColumns([...selectedColumns, selectedColumn]);
       }
-      console.log(selectedColumns);
   };
 
   const handleExecuteQuery = () => {
+    /*
+    This function edits the formattedQuery string to remove the brackets and then adds the selected columns and table name to the formattedQuery string.
+    It then sets the finalTable state variable to the table name and the finalQuery state variable to the formattedQuery1 string. It then runs the custom query.
+     */
     let formattedQuery1 = formattedQuery.substring(1, formattedQuery.length - 1);
     const selectedColumnString = selectedColumns.join(', ');
     formattedQuery1 = `select ${selectedColumnString} from ${tableName} where ${formattedQuery1}`;
     setFinalTable(tableName);
-    console.log(finaltable);
     console.log(formattedQuery1);
     runCustomQuery(formattedQuery1);
     setFinalQuery(formattedQuery1);
-    // console.log(finalQuery);
-    // empty the selectedColumns state
     setSelectedColumns([]);
   };
 
   useEffect(() => {
+    // store result when its value changes
     setCsvData(result);
   }, [result]);
 
   const handleDownloadCSV = () => {
+    /*
+    This function is used to download the result of the query as a CSV file. It uses the PapaParse library to convert the result into a CSV file.
+     */
     const csvContent = Papa.unparse(csvData);
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
@@ -167,24 +160,18 @@ const NewQueryBuilder = () => {
   };
 
   useEffect(() => {
-    // Initial query execution on component mount
     // in order to avoid a constant ping to the backend, we only want to run the query when the formattedQuery, tableName, or columnName changes
     if (!loading && formattedQuery === '' && tableName === '' && columnName === '') {
         runCustomQuery('show tables');
-        // console.log(runCustomQuery('select database()'));
       }
   }, [loading, formattedQuery, tableName, columnName]);
 
   useEffect(() => {
-    // Fetch database name on component mount
     runCustomQuery('select database()');
-
   }, []);
 
   useEffect(() => {
-    // Fetch table names on component mount
     runCustomQuery('show tables');
-
   }, []);
 
   return (
