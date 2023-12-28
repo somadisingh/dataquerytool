@@ -1,6 +1,6 @@
 import React from "react";
-import NewQueryBuilder from "./QueryBuilder";
-import SavedQuery from "./SavedQuery";
+// import SavedQuery from "../component/SavedQuery";
+import NewQueryBuilder from "../Functions/QueryBuilder"
 
 const AdminDashboard = () => {
     return (

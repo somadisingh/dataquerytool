@@ -1,9 +1,9 @@
 //import MyQueryBuilder from './component/MyQueryBuilder';
 //import NewQueryBuilder from './component/NewQueryBuilder';
-import DynamicQueryBuilder from './component/QueryBuilder';
-import SavedQuery from './component/SavedQuery';
-import AdminDashboard from './component/AdminDashboard';
-import NormalDashboard from './component/NormalDashboard';
+// import DynamicQueryBuilder from './component/QueryBuilder';
+// import SavedQuery from './component/SavedQuery';
+import AdminDashboard from './component/DashBoards/AdminDashboard'
+// import NormalDashboard from './DashBoards/NormalDashboard';
 import './App.css';
 
 function App() {

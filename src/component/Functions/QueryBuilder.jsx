@@ -4,10 +4,9 @@ import 'react-querybuilder/dist/query-builder.css';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import SaveQueryButton from './QuerySaver';
-import { CSVLink } from "react-csv";
-import Papa from 'papaparse';
-//import validateSqlQuery from './QueryValidator';
+import SaveQueryButton from '../Buttons/QuerySaver';
+import DownloadCSVButton from '../Buttons/DownloadCsv';
+import DeleteQueryButton from '../Buttons/DeleteQuery';
 
 const NewQueryBuilder = () => {
   const [query, setQuery] = useState({
@@ -17,13 +16,12 @@ const NewQueryBuilder = () => {
     ],
   });
   const [formattedQuery, setFormattedQuery] = useState(formatQuery(query, 'sql'));
-  const [tableName, setTableName] = useState();
-  const [columnName, setColumnName] = useState();
+  const [selectedTable, setSelectedTable] = useState('');
   const [result, setResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [tableNames, setTableNames] = useState([]);
   const [columnNames, setColumnNames] = useState([]);
-  const [fields, setFields] = useState([]); 
+  const [fields, setFields] = useState([]);
   const [selectedColumns, setSelectedColumns] = useState([]);
   const [databaseName, setDatabaseName] = useState('');
   const [queryDescription, setQueryDescription] = useState('');
@@ -32,7 +30,8 @@ const NewQueryBuilder = () => {
   const [csvData, setCsvData] = useState([]);
   const [savedQueries, setSavedQueries] = useState([]);
   const [selectedQueryId, setSelectedQueryId] = useState('');
-  //const [validationResult, setValidationResult] = useState(null);
+
+  const apiEndpoint = 'http://localhost:8080/api/customquery/execute';
 
   const runCustomQuery = async (sql) => {
     /*
@@ -44,92 +43,89 @@ const NewQueryBuilder = () => {
      */
     try {
       setLoading(true);
-      const response = await axios.post('http://localhost:8080/api/customquery/execute', { sql });
+      const response = await axios.post(apiEndpoint, { sql });
       const result = response.data;
+
       if (!sql.toLowerCase().includes('show tables') && !sql.toLowerCase().includes('describe') && !sql.toLowerCase().includes('database()') && !sql.toLowerCase().includes('save_query')) {
         setResult(result);
-        console.log(result[0]);
       }
-      if (sql.toLowerCase().includes('show tables')) setTableNames(result); 
-      if (sql.toLowerCase().includes('save_query')) {
-        //console.log(result);
-        setSavedQueries(result);
-      }
+
+      if (sql.toLowerCase().includes('show tables')) setTableNames(result);
+      if (sql.toLowerCase().includes('save_query')) setSavedQueries(result);
       if (sql.toLowerCase().includes('describe')) {
         setColumnNames(result.map((column) => column.Field));
         const fields = result.map((column) => ({ name: column.Field, label: column.Field }));
         setFields(fields);
       }
       if (sql.toLowerCase().includes('database()')) {
-          setDatabaseName(result[0]['database()']);
+        setDatabaseName(result[0]['database()']);
       }
-
 
       if (sql.toLowerCase().includes('select') && !sql.toLowerCase().includes('database()') && !sql.toLowerCase().includes('save_query')) {
         if (result.length > 0) {
           toast.success("Query Executed Successfully!", {
-            position: toast.POSITION.TOP_CENTER
+            position: toast.POSITION.TOP_CENTER,
           });
         } else {
-            toast.warn("No results found!", {
-                position: toast.POSITION.TOP_CENTER
-            });
-            }
-    }
-    } catch (err) {
-      console.log(err);
-        if (err.response && err.response.status === 500) {
-            toast.error("Please check your query and try again!", {
-                position: toast.POSITION.TOP_CENTER
-            });
+          toast.warn("No results found!", {
+            position: toast.POSITION.TOP_CENTER,
+          });
         }
+      }
+    } catch (err) {
+      console.error(err);
+      if (err.response && err.response.status === 500) {
+        toast.error("Please check your query and try again!", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  const handleQueryChange = (q) => {
+  const handleQueryChange = (newQuery) => {
     /*
     This function is used to handle the query change. It takes in a query object as a parameter and sets the query state variable to the query object.
     It also formats the query object and sets the formattedQuery state variable to the formatted query. This function is part of react-querybuilder.
      */
-    setQuery(q);
-    setFormattedQuery(formatQuery(q, 'sql'));
+    setQuery(newQuery);
+    setFormattedQuery(formatQuery(newQuery, 'sql'));
   };
 
-  const handleTableChange = async (t) => {
+  const handleTableChange = async (event) => {
     /*
     This function is used to handle the table change. It takes in a table object as a parameter and sets the tableName state variable to the table object.
     It also runs a custom query to describe the table and set the columnNames state variable to the result. It also sets the fields state variable to the result.
      */
-    const selectedTable = t.target.value;
-    setTableName(selectedTable);
+    const selectedTable = event.target.value;
+    setSelectedTable(selectedTable);
     try {
-        setLoading(true);
-        const response = await runCustomQuery(`describe ${selectedTable}`);
-        const columns = response.data.map((column) => column.Field);
-        setColumnNames(columns);
-        const fields = result.map((column) => ({ name: column.Field, label: column.Field }));
-        setFields(fields);
+      setLoading(true);
+      const response = await runCustomQuery(`describe ${selectedTable}`);
+      const columns = response.data.map((column) => column.Field);
+      setColumnNames(columns);
+      const fields = result.map((column) => ({ name: column.Field, label: column.Field }));
+      setFields(fields);
     } catch (err) {
-        console.error(err);
+      console.error(err);
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
   };
 
-  const handleColumnChange = (c) => {
+  const handleColumnChange = (event) => {
     /*
     This function works in tandem with radio buttons to select columns. It takes in a column object as a parameter and sets the selectedColumns state variable to the column object.
     It also checks if the selectedColumns state variable includes the column object. If it does, it will filter the selectedColumns state variable to remove the column object.
     If it does not, it will add the column object to the selectedColumns state variable.
      */
-    const selectedColumn = c.target.value;
+    const selectedColumn = event.target.value;
     if (selectedColumns.includes(selectedColumn)) {
-        setSelectedColumns(selectedColumns.filter((col) => col !== selectedColumn));
-      } else {
-        setSelectedColumns([...selectedColumns, selectedColumn]);
-      }
+      setSelectedColumns(selectedColumns.filter((col) => col !== selectedColumn));
+    } else {
+      setSelectedColumns([...selectedColumns, selectedColumn]);
+    }
   };
 
   const handleExecuteQuery = () => {
@@ -139,8 +135,8 @@ const NewQueryBuilder = () => {
      */
     let formattedQuery1 = formattedQuery.substring(1, formattedQuery.length - 1);
     const selectedColumnString = selectedColumns.join(', ');
-    formattedQuery1 = `select ${selectedColumnString} from ${tableName} where ${formattedQuery1}`;
-    setFinalTable(tableName);
+    formattedQuery1 = `select ${selectedColumnString} from ${selectedTable} where ${formattedQuery1}`;
+    setFinalTable(selectedTable);
     console.log(formattedQuery1);
     setFinalQuery(formattedQuery1);
     runCustomQuery(formattedQuery1);
@@ -152,64 +148,16 @@ const NewQueryBuilder = () => {
     setCsvData(result);
   }, [result]);
 
-  const handleDownloadCSV = () => {
-    /*
-    This function is used to download the result of the query as a CSV file. It uses the PapaParse library to convert the result into a CSV file.
-     */
-    const csvContent = Papa.unparse(csvData);
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    if (link.download !== undefined) {
-      const url = URL.createObjectURL(blob);
-      link.setAttribute('href', url);
-      link.setAttribute('download','result.csv');
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  };
-
-  const handleDeleteQuery = async () => {
-    /*
-    This function is used to delete a query. It takes in an id as a parameter and sends a DELETE request to the backend.
-    The backend will then delete the query with the corresponding id. It then runs a custom query to show all the queries and sets the result state variable to the result.
-      */
-    try {
-      setLoading(true);
-      const response = await axios.delete(`http://localhost:8080/api/query/delete/${selectedQueryId}`);
-      console.log(response);
-      runCustomQuery('select * from save_query');
-      toast.success('Query deleted successfully!', {
-        position: toast.POSITION.TOP_CENTER,
-      });
-    } catch (err) {
-      console.log(err);
-      toast.error('Error deleting query. Please try again.', {
-        position: toast.POSITION.TOP_CENTER,
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
     // in order to avoid a constant ping to the backend, we only want to run the query when the formattedQuery, tableName, or columnName changes
-    if (!loading && formattedQuery === '' && tableName === '' && columnName === '') {
-        runCustomQuery('show tables');
-      }
-  }, [loading, formattedQuery, tableName, columnName]);
+    if (!loading && formattedQuery === '' && selectedTable === '') {
+      runCustomQuery('show tables');
+    }
+  }, [loading, formattedQuery, selectedTable]);
 
   useEffect(() => {
-    console.log('hello');
     runCustomQuery('select database()');
-  }, []);
-
-  useEffect(() => {
     runCustomQuery('show tables');
-  }, []);
-
-  useEffect(() => {
     runCustomQuery('select * from save_query');
   }, []);
 
@@ -228,7 +176,7 @@ const NewQueryBuilder = () => {
             theme="colored"
          />
       <label htmlFor="tableName">Select Table:</label>
-      <select id="tableName" value={tableName} onChange={handleTableChange}>
+      <select id="tableName" value={selectedTable} onChange={handleTableChange}>
         {tableNames
           .filter(tableObject => !tableObject.Tables_in_reactql.includes('_'))
           .map((tableObject, index) => (
@@ -289,19 +237,18 @@ const NewQueryBuilder = () => {
       </select>
 
       {/* Delete button */}
-      <button onClick={handleDeleteQuery} disabled={!selectedQueryId}>
-        Delete Query
-      </button>
+      <DeleteQueryButton selectedQueryId={selectedQueryId} runCustomQuery={runCustomQuery} />
 
       {loading && <p>Loading...</p>}
+      
       {result.length > 0 && (
-                <div>
-                  <button onClick={handleDownloadCSV}>Download CSV</button>
-                  <table>
-                    {/* ... Your existing code for displaying the table ... */}
-                  </table>
-                </div>
-              )}
+        <div>
+          <DownloadCSVButton csvData={csvData} />
+          <table>
+            {/* ... Your existing code for displaying the table ... */}
+          </table>
+        </div>
+      )}
       {result.length > 0 && (
         <div>
           <h4>Result</h4>
