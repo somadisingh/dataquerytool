@@ -1,11 +1,11 @@
 import React from "react";
 //import NewQueryBuilder from "./QueryBuilder";
-import SavedQuery from "../component/SavedQuery";
+import SavedQuery from "../Functions/SavedQuery"
 
 const NormalDashboard = () => {
     return (
         <div>
-        <h1>NormalDashboard</h1>
+        <h1>Normal Dashboard</h1>
         <SavedQuery />
         </div>
     );

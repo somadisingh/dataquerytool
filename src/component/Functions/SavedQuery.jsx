@@ -4,6 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CSVLink } from "react-csv";
 import Papa from 'papaparse';
+import DownloadCSVButton from '../Buttons/DownloadCsv';
 
 const SavedQuery = () => {
 
@@ -13,6 +14,8 @@ const SavedQuery = () => {
   const [finalQuery, setFinalQuery] = useState('');
   const [selectedRow, setSelectedRow] = useState(null);
   const [csvData, setCsvData] = useState([]);
+  const [isEditingQuery, setIsEditingQuery] = useState(false);
+  const [editedQuery, setEditedQuery] = useState('');
 
 
   useEffect(() => {
@@ -44,7 +47,7 @@ const SavedQuery = () => {
       const response = await axios.post('http://localhost:8080/api/customquery/execute', { sql });
       const nresult = response.data;
       setNResult(nresult);
-      console.log(nresult);
+      //console.log(nresult);
     } catch (err) {
       console.log(err);
         if (err.response && err.response.status === 500) {
@@ -58,41 +61,35 @@ const SavedQuery = () => {
   };
 
   const handleRadioChange = (selectedRow) => {
+    const shouldEditQuery = window.confirm("Do you want to edit the query?");
     setSelectedRow(selectedRow);
-    console.log(selectedRow);
     const presetQuery = selectedRow.query;
-    if (presetQuery) {
-        console.log(presetQuery);
-        let value = presetQuery.substring(presetQuery.indexOf('from') + 5, presetQuery.indexOf('where') - 1);
-        console.log(value);
-        setFinalQuery(presetQuery);
+    if (shouldEditQuery) {
+      if (presetQuery) {
+        setEditedQuery(presetQuery);
+        setIsEditingQuery(true);
+      }
     }
+    else {
+      if (presetQuery) {
+        setFinalQuery(presetQuery);
+      }
+    }
+  };
+
+  const handleModifyQuery = () => {
+    setFinalQuery(editedQuery);
+    setIsEditingQuery(false);
   };
 
   const handleRunButtonClick = () => {
     if (selectedRow !== null) {
-        //const selectedQuery = result[0].query;
         displayResults(finalQuery);
     }};
 
     useEffect(() => {
       setCsvData(nresult);
     }, [nresult]);
-
-    const handleDownloadCSV = () => {
-      const csvContent = Papa.unparse(csvData);
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      if (link.download !== undefined) {
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', selectedRow.description + '.csv');
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-    };
 
 
   return (
@@ -112,9 +109,20 @@ const SavedQuery = () => {
 
       {loading && <p>Loading...</p>}
 
+      {isEditingQuery && (
+        <div>
+          <label>Edit Query:</label>
+          <textarea
+            value={editedQuery}
+            onChange={(e) => setEditedQuery(e.target.value)}
+          />
+          <button onClick={handleModifyQuery}>Modify Query</button>
+        </div>
+      )}
+
       {result.length > 0 && (
         <div>
-          <h4>Result</h4>
+          <h4>Saved Queries</h4>
           <table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid #ddd' }}>
             <thead>
               <tr>
@@ -144,38 +152,43 @@ const SavedQuery = () => {
         <button onClick={handleRunButtonClick}>Run</button>
       )}
 
-    {nresult.length > 0 && (
-                <div>
-                  <button onClick={handleDownloadCSV}>Download CSV</button>
-                  <table>
-                    {/* ... Your existing code for displaying the table ... */}
-                  </table>
-                </div>
-              )}
+      {nresult.length > 0 && (
+          <div>
+            <DownloadCSVButton csvData={csvData} />
+          </div>
+        )}
 
-    {nresult.length > 0 && (
-            <div>
-              <h4>Result</h4>
-              <table>
-                <thead>
-                  <tr>
-                    {Object.keys(nresult[0]).map((key) => (
-                      <th key={key}>{key}</th>
+      {nresult.length > 0 && (
+        <div>
+          <h4>Result</h4>
+          <div style={{ overflowY: nresult.length > 10 ? 'auto' : 'visible', maxHeight: nresult.length > 10 ? '500px' : 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '10px' }}>
+              <thead>
+                <tr style={{ backgroundColor: '#f2f2f2' }}>
+                  {Object.keys(nresult[0]).map((key) => (
+                    <th key={key} style={{ border: '1px solid #dddddd', padding: '8px', textAlign: 'left' }}>
+                      {key}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {nresult.map((row, index) => (
+                  <tr key={index} style={{ borderBottom: '1px solid #dddddd' }}>
+                    {Object.values(row).map((value, index) => (
+                      <td key={index} style={{ border: '1px solid #dddddd', padding: '8px' }}>
+                        {value}
+                      </td>
                     ))}
                   </tr>
-                </thead>
-                <tbody>
-                  {nresult.map((row, index) => (
-                    <tr key={index}>
-                      {Object.values(row).map((value, index) => (
-                        <td key={index}>{value}</td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+
     </div>
   );
 };
