@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import SaveQueryButton from '../Buttons/QuerySaver';
 import DownloadCSVButton from '../Buttons/DownloadCsv';
 import DeleteQueryButton from '../Buttons/DeleteQuery';
+import '../../designs/QueryBuilder.css';
 
 const NewQueryBuilder = () => {
   const [query, setQuery] = useState({
@@ -162,7 +163,7 @@ const NewQueryBuilder = () => {
   }, []);
 
   return (
-    <div>
+    <div className="query-builder-container">
         <ToastContainer
             position="top-center"
             autoClose={3000}
@@ -187,7 +188,7 @@ const NewQueryBuilder = () => {
       </select>
 
       <label htmlFor="columnName">Select Columns:</label>
-      <div>
+      <div className = "test">
         {columnNames.map((columnName) => (
           <div key={columnName}>
             <input
@@ -206,7 +207,9 @@ const NewQueryBuilder = () => {
       <QueryBuilder fields={fields} query={query} onQueryChange={handleQueryChange} />
 
       <button onClick={handleExecuteQuery}>Execute Query</button>
+      <br/>
 
+      <input type="text" value={queryDescription} onChange={(e) => setQueryDescription(e.target.value)} placeholder="Query Description" />
       <SaveQueryButton
         formattedQuery={finalQuery}
         queryDescription={queryDescription}
@@ -215,12 +218,10 @@ const NewQueryBuilder = () => {
         runCustomQuery={runCustomQuery}
       />
 
-      <input type="text" value={queryDescription} onChange={(e) => setQueryDescription(e.target.value)} placeholder="Query Description" />
-
         {/* input field to take query description */}
       <br/>
       {/* Drop-down menu for saved queries */}
-      <label htmlFor="savedQueries">Select Saved Query:</label>
+      <label htmlFor="savedQueries">Select a Saved Query to Delete:</label>
       <select
         id="savedQueries"
         value={selectedQueryId}
@@ -243,32 +244,38 @@ const NewQueryBuilder = () => {
       
       {result.length > 0 && (
         <div>
-          <DownloadCSVButton csvData={csvData} />
-          <table>
-            {/* ... Your existing code for displaying the table ... */}
-          </table>
+          <h4>Result</h4>
+          <div style={{ overflowY: result.length > 10 ? 'auto' : 'visible', maxHeight: result.length > 10 ? '300px' : 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '10px', border: '1px solid #ddd' }}>
+              <thead>
+                <tr style={{ backgroundColor: '#f2f2f2' }}>
+                  {Object.keys(result[0]).map((key) => (
+                    <th key={key} style={{ border: '1px solid #dddddd', padding: '8px', textAlign: 'left' }}>
+                      {key}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {result.map((row, index) => (
+                  <tr key={index} style={{ border: '1px solid #dddddd' }}>
+                    {Object.values(row).map((value, index) => (
+                      <td key={index} style={{ border: '1px solid #dddddd', padding: '8px' }}>
+                        {value}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
       {result.length > 0 && (
         <div>
-          <h4>Result</h4>
+          <DownloadCSVButton csvData={csvData} />
           <table>
-            <thead>
-              <tr>
-                {Object.keys(result[0]).map((key) => (
-                  <th key={key}>{key}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {result.map((row, index) => (
-                <tr key={index}>
-                  {Object.values(row).map((value, index) => (
-                    <td key={index}>{value}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
+            {/* ... Your existing code for displaying the table ... */}
           </table>
         </div>
       )}

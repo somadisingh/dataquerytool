@@ -10,8 +10,8 @@ function App() {
   return (
       //<DynamicQueryBuilder />
       // <SavedQuery />
-      // <AdminDashboard />
-      <NormalDashboard />
+      <AdminDashboard />
+      // <NormalDashboard />
   );
 }
 
