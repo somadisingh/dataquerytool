@@ -1,11 +1,16 @@
 // App.js
-import { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { useState } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 
-import LoginPage from './components/LoginPage';
-import AdminDash from './components/AdminDash';
-import NormalDash from './components/NormalDash';
-import './App.css';
+import LoginPage from "./pages/LoginPage";
+import AdminDash from "./components/AdminDash";
+import NormalDash from "./components/NormalDash";
+import FrontPage from "./pages/FrontPage";
 
 const App = () => {
   const [userType, setUserType] = useState(null);
@@ -19,18 +24,27 @@ const App = () => {
     return <Navigate to="/" replace />;
   };
 
+  function roleBasedNavigation(userType) {
+    if (userType === "admin") {
+      return <Navigate to="/admin" />;
+    } else {
+      return <Navigate to="/normal" />;
+    }
+  }
+
   return (
     <Router>
       <Routes>
         <Route
           path="/"
+          element={userType ? roleBasedNavigation(userType) : <FrontPage />}
+        />
+
+        <Route
+          path="/login"
           element={
             userType ? (
-              userType === 'admin' ? (
-                <Navigate to="/admin" />
-              ) : (
-                <Navigate to="/normal" />
-              )
+              roleBasedNavigation(userType)
             ) : (
               <LoginPage onLogin={handleLogin} />
             )
@@ -40,7 +54,7 @@ const App = () => {
         <Route
           path="/admin"
           element={
-            userType === 'admin' ? (
+            userType === "admin" ? (
               <AdminDash onLogout={handleLogout} />
             ) : (
               <Navigate to="/" replace />
@@ -51,7 +65,7 @@ const App = () => {
         <Route
           path="/normal"
           element={
-            userType === 'normal' ? (
+            userType === "normal" ? (
               <NormalDash onLogout={handleLogout} />
             ) : (
               <Navigate to="/" replace />
