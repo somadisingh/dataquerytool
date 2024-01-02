@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { CSVLink } from "react-csv";
 import Papa from 'papaparse';
 import DownloadCSVButton from '../Buttons/DownloadCsv';
+import '../../designs/SavedQuery.css';
 
 const SavedQuery = () => {
 
@@ -46,7 +47,14 @@ const SavedQuery = () => {
       setLoading(true);
       const response = await axios.post('http://localhost:8080/api/customquery/execute', { sql });
       const nresult = response.data;
-      setNResult(nresult);
+      if (nresult.length === 0) {
+        toast.warn("No results found!", {
+          position: toast.POSITION.TOP_CENTER
+        });
+      }
+      else {
+        setNResult(nresult);
+      }
       //console.log(nresult);
     } catch (err) {
       console.log(err);
@@ -93,7 +101,7 @@ const SavedQuery = () => {
 
 
   return (
-    <div>
+    <div className="saved-query-container">
         <ToastContainer
             position="top-center"
             autoClose={3000}
