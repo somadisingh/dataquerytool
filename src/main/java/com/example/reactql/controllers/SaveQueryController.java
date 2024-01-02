@@ -1,5 +1,5 @@
 package com.example.reactql.controllers;
-
+// tis controller is for saving and deleting queries
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

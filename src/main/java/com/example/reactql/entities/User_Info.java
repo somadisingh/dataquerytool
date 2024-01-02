@@ -1,18 +1,11 @@
 package com.example.reactql.entities;
-
+// this entity is for storing user login and user access
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-// import jakarta.persistence.GeneratedValue;
-// import jakarta.persistence.GenerationType;
-
 
 @Entity
 public class User_Info {
-
-    //@Id
-    // @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    // private Long id;
 
     @Id
     @Column(nullable = false, name="Username")

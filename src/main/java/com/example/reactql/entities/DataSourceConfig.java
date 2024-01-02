@@ -1,5 +1,5 @@
 package com.example.reactql.entities;
-
+// for configuring datasource
 public class DataSourceConfig {
 
     private String url;

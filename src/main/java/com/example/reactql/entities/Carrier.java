@@ -1,5 +1,5 @@
 package com.example.reactql.entities;
-
+// this entity is for storing carrier details
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

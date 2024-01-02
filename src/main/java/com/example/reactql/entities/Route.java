@@ -1,5 +1,5 @@
 package com.example.reactql.entities;
-
+// this entity is for storing route details
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

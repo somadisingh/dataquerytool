@@ -1,11 +1,10 @@
 package com.example.reactql.entities;
-
+// this entity is for queries which are saved by admin
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
-// import jakarta.persistence.Lob;
 
 @Entity
 public class Save_Query {

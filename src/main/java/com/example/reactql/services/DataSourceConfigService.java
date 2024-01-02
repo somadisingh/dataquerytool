@@ -1,5 +1,5 @@
 package com.example.reactql.services;
-
+// this service is for configuring datasource. usage in ConnectionController.java
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +23,6 @@ public class DataSourceConfigService {
         System.out.println("url: " + config.getUrl() + "/" + config.getdatabasename());
         hikariConfig.setUsername(config.getUsername());
         hikariConfig.setPassword(config.getPassword());
-
-        // Additional HikariCP configuration if needed
 
         HikariDataSource newDataSource = new HikariDataSource(hikariConfig);
 

@@ -1,5 +1,5 @@
 package com.example.reactql.services;
-
+// this service is for storing configured connection details. usage in saveConnectionDetails.java
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

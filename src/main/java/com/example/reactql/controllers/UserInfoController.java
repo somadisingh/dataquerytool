@@ -1,5 +1,5 @@
 package com.example.reactql.controllers;
-
+// this API endpoint(controller) is for validating user credentials
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

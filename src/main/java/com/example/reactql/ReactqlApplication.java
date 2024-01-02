@@ -15,7 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class ReactqlApplication {
-
+// main application. this is where the application starts
 	public static void main(String[] args) {
 		// ApplicationContext context = SpringApplication.run(ReactqlApplication.class, args);
 		SpringApplication.run(ReactqlApplication.class, args);

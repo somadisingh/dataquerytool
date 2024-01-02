@@ -1,5 +1,5 @@
 package com.example.reactql.repo;
-
+// this repo is for storing carriers
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import com.example.reactql.entities.Carrier;

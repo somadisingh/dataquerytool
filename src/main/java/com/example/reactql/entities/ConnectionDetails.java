@@ -1,5 +1,5 @@
 package com.example.reactql.entities;
-
+// this entity is for storing configured connection details
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 

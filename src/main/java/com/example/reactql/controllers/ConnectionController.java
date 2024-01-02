@@ -1,5 +1,5 @@
 package com.example.reactql.controllers;
-
+// this controller allows user to configure connection details(admin only) and connect to saved connections(both admin and user)
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
