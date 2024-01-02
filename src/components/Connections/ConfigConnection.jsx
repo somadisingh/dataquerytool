@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 
-const DatasourceConfigForm = () => {
+const ConfigConnection = () => {
     const [url, setUrl] = useState('');
   const [config, setConfig] = useState({
     url: '',
@@ -63,4 +63,4 @@ const DatasourceConfigForm = () => {
   );
 };
 
-export default DatasourceConfigForm;
+export default ConfigConnection;

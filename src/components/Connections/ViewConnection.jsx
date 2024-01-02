@@ -31,7 +31,7 @@ const SavedConnectionsTable = ({ savedConnections, onConnect }) => {
   );
 };
 
-const NormalDash = ({ onLogout }) => {
+const ViewConnections = () => {
   const [savedConnections, setSavedConnections] = useState([]);
   const [selectedConnection, setSelectedConnection] = useState(null);
   const [newUrl, setNewUrl] = useState('');
@@ -94,8 +94,6 @@ const NormalDash = ({ onLogout }) => {
 
   return (
     <div>
-      <h1>Normal Dashboard</h1>
-      <button onClick={onLogout}>LogOut</button>
       <SavedConnectionsTable savedConnections={savedConnections} onConnect={setSelectedConnection} />
       <div>
         <button onClick={handleConnect} disabled={!selectedConnection}>
@@ -106,4 +104,4 @@ const NormalDash = ({ onLogout }) => {
   );
 };
 
-export default NormalDash;
+export default ViewConnections;

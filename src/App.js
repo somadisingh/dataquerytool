@@ -1,10 +1,11 @@
-// App.js
 import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
-import LoginPage from './components/LoginPage';
-import AdminDash from './components/AdminDash';
-import NormalDash from './components/NormalDash';
+import LoginPage from './components/Login/LoginPage';
+import AdminDash from './components/Dashboards/AdminDash';
+import NormalDash from './components/Dashboards/NormalDash';
+import AdminDashboard from './components/Dashboards/AdminDashboard';
+import NormalDashboard from './components/Dashboards/NormalDashboard';
 import './App.css';
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
   return (
     <Router>
       <Routes>
+
         <Route
           path="/"
           element={
@@ -38,10 +40,13 @@ const App = () => {
         />
 
         <Route
-          path="/admin"
+          path="/admin/*"
           element={
             userType === 'admin' ? (
-              <AdminDash onLogout={handleLogout} />
+              <Routes>
+                <Route path="/" element={<AdminDash onLogout={handleLogout} />} />
+                <Route path="dashboard" element={<AdminDashboard onLogout={handleLogout} />} />
+              </Routes>
             ) : (
               <Navigate to="/" replace />
             )
@@ -49,10 +54,13 @@ const App = () => {
         />
 
         <Route
-          path="/normal"
+          path="/normal/*"
           element={
             userType === 'normal' ? (
-              <NormalDash onLogout={handleLogout} />
+              <Routes>
+                <Route path="/" element={<NormalDash onLogout={handleLogout} />} />
+                <Route path="dashboard" element={<NormalDashboard onLogout={handleLogout} />} />
+              </Routes>
             ) : (
               <Navigate to="/" replace />
             )
