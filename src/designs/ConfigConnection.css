@@ -1,0 +1,65 @@
+/* ConfigConnection.css */
+
+/* Styles for ConfigConnection component */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .form {
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Styles for AdminConnector component */
+  
+  .header-admin {
+    text-align: center;
+  }
+  
+  .connector-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Adjust the gap between buttons as needed */
+    margin-top: 20px; /* Add margin to separate buttons from the header */
+  }
+  
+  .connector-buttons button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
