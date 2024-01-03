@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { formatQuery, QueryBuilder } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css';
 import SaveQueryButton from '../Buttons/QuerySaver';
 import DownloadCSVButton from '../Buttons/DownloadCsv';
@@ -218,6 +218,12 @@ const NewQueryBuilder = () => {
         runCustomQuery={runCustomQuery}
       />
 
+        {result.length > 0 && (
+          <div>
+            <DownloadCSVButton csvData={csvData} />
+          </div>
+        )}
+
         {/* input field to take query description */}
       <br/>
       {/* Drop-down menu for saved queries */}
@@ -269,14 +275,6 @@ const NewQueryBuilder = () => {
               </tbody>
             </table>
           </div>
-        </div>
-      )}
-      {result.length > 0 && (
-        <div>
-          <DownloadCSVButton csvData={csvData} />
-          <table>
-            {/* ... Your existing code for displaying the table ... */}
-          </table>
         </div>
       )}
     </div>
