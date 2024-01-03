@@ -4,7 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CSVLink } from "react-csv";
 import Papa from 'papaparse';
-import DownloadCSVButton from '../Buttons/DownloadCsv';
+import DownloadCSVButton from '../Buttons/DownloadCsv'; 
 import '../../designs/SavedQuery.css';
 
 const SavedQuery = () => {
@@ -56,6 +56,7 @@ const SavedQuery = () => {
         setNResult(nresult);
       }
       //console.log(nresult);
+      
     } catch (err) {
       console.log(err);
         if (err.response && err.response.status === 500) {
@@ -68,22 +69,105 @@ const SavedQuery = () => {
     }
   };
 
+  // const handleRadioChange = (selectedRow) => {
+  //   const shouldEditQuery = window.confirm("Do you want to edit the query?");
+  //   setSelectedRow(selectedRow);
+  //   const presetQuery = selectedRow.query;
+  
+  //   if (shouldEditQuery) {
+  //     if (presetQuery) {
+  //       const queryArray = presetQuery.split(" ");
+  //       let replaceIndex = -1;
+  
+  //       // Find the position of single quotes in the array
+  //       queryArray.forEach((word, index) => {
+  //         if (word.includes("'")) {
+  //           replaceIndex = index;
+  //         }
+  //       });
+  
+  //       // Prompt user to replace the value between single quotes
+  //       if (replaceIndex !== -1) {
+  //         const replacement = prompt(`Enter placeholder value for ${presetQuery}:`, queryArray[replaceIndex]);
+  
+  //         // Replace the value and update the state
+  //         if (replacement !== null) {
+  //           queryArray[replaceIndex] = `'${replacement}'`;
+  //           const updatedQuery = queryArray.join(" ");
+  //           setFinalQuery(updatedQuery);
+  //           console.log(updatedQuery);
+  //           // displayResults(updatedQuery); // Optionally, you may want to run the updated query immediately
+  //         }
+  //       }
+  //     }
+  //   } else {
+  //     if (presetQuery) {
+  //       setFinalQuery(presetQuery);
+  //     }
+  //   }
+  // };
+  
+  // const handleRadioChange = (selectedRow) => {
+  //   const shouldEditQuery = window.confirm("Do you want to edit the query?");
+  //   setSelectedRow(selectedRow);
+  //   const presetQuery = selectedRow.query;
+  
+  //   if (shouldEditQuery) {
+  //     if (presetQuery) {
+  //       const regex = /'([^']*)'/; // Regex to match text between single quotes
+  //       const match = presetQuery.match(regex);
+  
+  //       if (match && match.length > 1) {
+  //         const currentValue = match[1];
+  //         const replacement = prompt(`Replace the value between single quotes for ${presetQuery}:`, currentValue);
+  
+  //         if (replacement !== null) {
+  //           const updatedQuery = presetQuery.replace(regex, `'${replacement}'`);
+  //           setFinalQuery(updatedQuery);
+  //           console.log(updatedQuery);
+  //           // displayResults(updatedQuery); // Optionally, you may want to run the updated query immediately
+  //         }
+  //       }
+  //     }
+  //   } else {
+  //     if (presetQuery) {
+  //       setFinalQuery(presetQuery);
+  //     }
+  //   }
+  // };
+
   const handleRadioChange = (selectedRow) => {
     const shouldEditQuery = window.confirm("Do you want to edit the query?");
     setSelectedRow(selectedRow);
     const presetQuery = selectedRow.query;
+  
     if (shouldEditQuery) {
       if (presetQuery) {
-        setEditedQuery(presetQuery);
-        setIsEditingQuery(true);
+        const regex = /'([^']*)'/g; // Updated regex with global flag for global matching
+        let match;
+        let updatedQuery = presetQuery;
+  
+        while ((match = regex.exec(presetQuery)) !== null) {
+          const currentValue = match[1];
+          const replacement = prompt(`Replace the value between single quotes for ${presetQuery}:`, currentValue);
+  
+          if (replacement !== null) {
+            updatedQuery = updatedQuery.replace(`'${currentValue}'`, `'${replacement}'`);
+          }
+        }
+  
+        setFinalQuery(updatedQuery);
+        console.log(updatedQuery);
+        // displayResults(updatedQuery); // Optionally, you may want to run the updated query immediately
       }
-    }
-    else {
+    } else {
       if (presetQuery) {
         setFinalQuery(presetQuery);
       }
     }
   };
+  
+  
 
   const handleModifyQuery = () => {
     setFinalQuery(editedQuery);
@@ -93,6 +177,10 @@ const SavedQuery = () => {
   const handleRunButtonClick = () => {
     if (selectedRow !== null) {
         displayResults(finalQuery);
+        setFinalQuery(''); // Reset the final query
+        setIsEditingQuery(false); // Reset the editing flag
+        setEditedQuery(''); // Reset the edited query
+        // setSelectedRow(null); // Deselect the radio button
     }};
 
     useEffect(() => {

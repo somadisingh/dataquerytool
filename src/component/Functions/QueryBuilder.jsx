@@ -165,8 +165,8 @@ const NewQueryBuilder = () => {
   return (
     <div className="query-builder-container">
         <ToastContainer
-            position="top-center"
-            autoClose={3000}
+            position="top-right"
+            autoClose={2000}
             hideProgressBar={false}
             newestOnTop={false}
             closeOnClick

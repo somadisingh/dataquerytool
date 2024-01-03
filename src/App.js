@@ -12,6 +12,7 @@ const App = () => {
   const [userType, setUserType] = useState(null);
 
   const handleLogin = (type) => {
+    
     setUserType(type);
   };
 

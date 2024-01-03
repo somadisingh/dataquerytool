@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import "../../designs/ViewConnection.css";
 
 const SavedConnectionsTable = ({ savedConnections, onConnect }) => {
   return (
@@ -93,10 +94,10 @@ const ViewConnections = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <SavedConnectionsTable savedConnections={savedConnections} onConnect={setSelectedConnection} />
       <div>
-        <button onClick={handleConnect} disabled={!selectedConnection}>
+        <button className="connect-button" onClick={handleConnect} disabled={!selectedConnection}>
           Connect
         </button>
       </div>

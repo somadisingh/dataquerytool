@@ -8,7 +8,7 @@ const AdminDashboard = ({onLogout}) => {
         <h1>Admin Dashboard</h1>
         <button onClick={onLogout}>LogOut</button>
         <NewQueryBuilder />
-        <SavedQuery />
+        {/* <SavedQuery /> */}
         </div>
     );
 };

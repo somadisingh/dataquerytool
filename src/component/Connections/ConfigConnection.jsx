@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../../designs/ConfigConnection.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // this component is used to configure the datasource. It takes in the url, username, password and databasename as input and sends a POST request to the backend.
 
 const ConfigConnection = () => {
@@ -25,8 +27,10 @@ const ConfigConnection = () => {
     try {
       await axios.post('http://localhost:8080/api/connection/configure', config);
       console.log('Datasource configured successfully');
+      toast.success('Datasource configured successfully');
     } catch (error) {
       console.error('Error configuring datasource:', error.message);
+      toast.error('Error configuring datasource');
     }
   };
 
@@ -39,13 +43,27 @@ const ConfigConnection = () => {
         password: config.password,
       });
       console.log('Details saved successfully');
+      toast.success('Details saved successfully');
     } catch (error) {
       console.error('Error saving details:', error.message);
+      toast.error('Error saving details');
     }
   };
 
   return (
     <div className="container">
+      <ToastContainer 
+      position="top-right"
+      autoClose={2000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme='colored'
+      />
       <form className="form" onSubmit={(e) => e.preventDefault()}>
         <label className="label">Name:</label>
         <input
