@@ -9,7 +9,7 @@ const FrontPage = () => {
   const navigate = useNavigate();
 
   const cardClasses =
-    "flex justify-center items-center bg-white rounded-xl m-4 transition-all duration-500 ease-in-out overflow-hidden w-full hover:cursor-pointer hover:shadow-xl hover:bg-primary hover:text-white hover:fill-white hover:border-2 hover:-translate-y-2 ";
+    "flex justify-center items-center bg-white rounded-xl m-4 transition-all duration-500 ease-in-out overflow-hidden w-full hover:cursor-pointer hover:shadow-xl hover:bg-primary hover:text-white hover:fill-white hover:border-2 hover:-translate-y-1 ";
 
   const [expandSide, setExpandSide] = useState(0);
   const [isNavigating, setIsNavigating] = useState(false);
