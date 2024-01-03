@@ -9,7 +9,7 @@ const FrontPage = () => {
   const navigate = useNavigate();
 
   const cardClasses =
-    "flex justify-center items-center bg-white rounded-xl m-4 transition-all duration-500 ease-in-out overflow-hidden w-full hover:cursor-pointer hover:shadow-xl hover:bg-primary hover:text-white hover:fill-white hover:border-2 hover:-translate-y-1 ";
+    "flex justify-center items-center bg-white transition-all duration-500 ease-in-out overflow-hidden w-full hover:cursor-pointer hover:shadow-xl hover:bg-primary hover:text-white hover:fill-white hover:border-2 hover:-translate-y-1 ";
 
   const [expandSide, setExpandSide] = useState(0);
   const [isNavigating, setIsNavigating] = useState(false);
@@ -32,12 +32,12 @@ const FrontPage = () => {
     <div
       key="1"
       className={cn(
-        "flex h-screen bg-primary transition-all duration-500",
+        "flex h-screen transition-all duration-500",
         isNavigating ? "animate-fadeOut" : ""
       )}
     >
       <div
-        className={cn(cardClasses, "mr-2", expandSide === 2 && "w-0")}
+        className={cn(cardClasses, expandSide === 2 && "w-0")}
         onClick={(e) => {
           e.preventDefault();
           toggleSide(1);
@@ -46,7 +46,7 @@ const FrontPage = () => {
         <SqlLogo />
       </div>
       <div
-        className={cn(cardClasses, "ml-2", expandSide === 1 && "w-0")}
+        className={cn(cardClasses, expandSide === 1 && "w-0")}
         onClick={(e) => {
           e.preventDefault();
           toggleSide(2);
