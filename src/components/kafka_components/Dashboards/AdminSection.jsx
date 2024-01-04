@@ -3,6 +3,20 @@ import PresetTemplate2 from "../Functions/PresetTemplate2";
 import AddDeleteTemplate from "../Buttons/AddDeleteTemplate";
 import UseTemplate from "../Functions/UseTemplate";
 import axios from "axios";
+import MaxWidthWrapper from "../../MaxWidthWrapper";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../../ui/card";
+import { Button } from "../../ui/button";
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
+import { H2, H3, H4, Para } from "../../ui/typography";
+import { LogOut } from "lucide-react";
 
 const AdminSection = ({ onLogout }) => {
   const [selectedTemplate, setSelectedTemplate] = useState(null);
@@ -26,46 +40,58 @@ const AdminSection = ({ onLogout }) => {
   };
 
   return (
-    <div className="container">
-      <h2 className="heading">Admin Section</h2>
-      <h3>
+    <MaxWidthWrapper className="container mt-2">
+      <H2 className="flex items-center justify-between w-full">
+        <span>Kafka Admin Dashboard</span>{" "}
+        <Button variant="destructive" onClick={onLogout}>
+          Logout <LogOut className="ml-2 w-4 h-4" />
+        </Button>
+      </H2>
+
+      <Para>
         Kafka Server Configuration (by default application connects to
         localhost:9092)
-      </h3>
-      <label className="label" htmlFor="bootstrapServers">
-        Kafka Server Address (Format = broker:port):
-      </label>
-      <input
-        className="input"
-        type="text"
-        id="bootstrapServers"
-        value={kafkaServer}
-        onChange={(e) => setKafkaServer(e.target.value)}
-      />
+      </Para>
 
-      <button
-        className="del-button"
-        onClick={handleUpdateConfig}
-        disabled={!kafkaServer}
-      >
-        Update Kafka Configuration
-      </button>
-      <br />
-      <button className="button" onClick={onLogout}>
-        Logout
-      </button>
+      <form className="mt-2 flex items-end">
+        <div>
+          <Label htmlFor="bootstrapServers">Kafka Server Address</Label>
+          <Input
+            id="bootstrapServers"
+            className="mb-0"
+            type="text"
+            placeholder="host:port"
+            value={kafkaServer}
+            onChange={(e) => setKafkaServer(e.target.value)}
+          />
+        </div>
+        <Button
+          className="mb-0"
+          onClick={handleUpdateConfig}
+          disabled={!kafkaServer}
+        >
+          Update Kafka Configuration
+        </Button>
+      </form>
 
-      <h2 className="heading">Preset Templates</h2>
-      <AddDeleteTemplate
-        selectedTemplate={selectedTemplate}
-        setSelectedTemplate={setSelectedTemplate}
-      />
-      <PresetTemplate2 setSelectedTemplate={setSelectedTemplate} />
-
-      <UseTemplate
-        selectedTemplate={selectedTemplate && selectedTemplate.template_content}
-      />
-    </div>
+      <Card className="mt-4">
+        <CardHeader>
+          <CardTitle>Preset Templates</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <AddDeleteTemplate
+            selectedTemplate={selectedTemplate}
+            setSelectedTemplate={setSelectedTemplate}
+          />
+          <PresetTemplate2 setSelectedTemplate={setSelectedTemplate} />
+          <UseTemplate
+            selectedTemplate={
+              selectedTemplate && selectedTemplate.template_content
+            }
+          />
+        </CardContent>
+      </Card>
+    </MaxWidthWrapper>
   );
 };
 

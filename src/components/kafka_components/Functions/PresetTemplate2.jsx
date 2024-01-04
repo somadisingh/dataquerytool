@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 //import MessageSendButton from "../Buttons/MessageSendButton";
-import "../designs/PresetTemplate.css";
+// import "../designs/PresetTemplate.css";
 
 // Display the templates
 export default function PresetTemplate2(props) {

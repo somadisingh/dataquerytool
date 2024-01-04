@@ -1,8 +1,19 @@
 import React, { useState } from "react";
 import axios from "axios";
-//import MessageSendButton from "./MessageSendButton";
-import "../designs/PresetTemplate.css";
-import "../designs/AddTemplate.css";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "../../ui/dialog";
+import { Button } from "../../ui/button";
+import { Input } from "../../ui/input";
+import { Label } from "../../ui/label";
+import { CopyPlus, Trash2 } from "lucide-react";
 
 // This component is used to add and delete templates.
 export default function AddDeleteTemplate(props) {
@@ -10,7 +21,8 @@ export default function AddDeleteTemplate(props) {
   const [templateName, setName] = useState("");
   const [templateContent, setContent] = useState("");
 
-  const handleAddTemplate = () => {
+  const handleAddTemplate = (e) => {
+    e.preventDefault();
     const templateData = {
       templateName: templateName,
       templateContent: templateContent,
@@ -22,7 +34,7 @@ export default function AddDeleteTemplate(props) {
         console.log("Template added successfully:", response.data);
         setName("");
         setContent("");
-        document.getElementById("add-template").close(); // Close the add template form dialog box
+        document.getElementById("close-add-dialog").click(); // Close the add template form dialog box
       })
       .catch((error) => {
         console.error("Error adding template:", error);
@@ -53,64 +65,79 @@ export default function AddDeleteTemplate(props) {
 
   return (
     <div>
-      <button
-        className="button2"
-        onClick={(e) => {
-          e.preventDefault();
-          document.getElementById("add-template").showModal(); // Show the add template form as a dialog box
-        }}
-      >
-        Add Template
-      </button>
-      <button
-        className="del-button2"
-        onClick={handleDeleteTemplate}
-        disabled={!props.selectedTemplate}
-      >
-        Delete Template
-      </button>
+      <div className="flex items-center justify-end gap-2">
+        {/* Add Template Form as a dialog box */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button size="small" className="m-0">
+              <CopyPlus className="mr-1 h-3 w-3" /> Add Template
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[640px]">
+            <DialogHeader>
+              <DialogTitle>Create New Template</DialogTitle>
+              <DialogDescription>
+                Create a new message template for your Kafka topic. You can use
+                placeholders to dynamically insert data into your message using
+                curly braces. For example, if you want to insert the name of the
+                user, you can use the placeholder <code>{"{name}"}</code>. If
+                you want to make a field mandatory, you can use the placeholder{" "}
+                <code>{"{name*}"}</code>.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="name" className="text-right m-0">
+                  Template Name
+                </Label>
+                <Input
+                  id="templateName"
+                  className="col-span-3 m-0"
+                  value={templateName}
+                  placeholder="Enter template name"
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="username" className="text-right m-0">
+                  Template Content
+                </Label>
+                <Input
+                  id="templateContent"
+                  className="col-span-3 m-0"
+                  placeholder="Hello {name*}, welcome to {company}!"
+                  value={templateContent}
+                  onChange={(e) => setContent(e.target.value)}
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button type="submit" onClick={handleAddTemplate}>
+                Add Template
+              </Button>
 
-      {/* Add Template Form as a dialog box */}
-      <dialog id="add-template">
-        <div className="container2">
-          <h3 className="heading2">Add Template</h3>
-          <label className="label2" htmlFor="templateName">
-            Template Name:
-          </label>
-          <input
-            className="input2"
-            type="text"
-            id="templateName"
-            value={templateName}
-            placeholder="Enter template name"
-            onChange={(e) => setName(e.target.value)}
-          />
+              {/* Hidden button to trigger close action after submission */}
+              <DialogClose asChild>
+                <Button type="button" id="close-add-dialog" className="hidden">
+                  Close
+                </Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
-          <label className="label2" htmlFor="templateContent">
-            Template Content:
-          </label>
-          <textarea
-            className="textarea2"
-            id="templateContent"
-            value={templateContent}
-            placeholder="Enter template content"
-            onChange={(e) => setContent(e.target.value)}
-          />
-
-          <button className="button2" onClick={handleAddTemplate}>
-            Add Template
-          </button>
-          <button
-            className="button2"
-            onClick={(e) => {
-              e.preventDefault();
-              document.getElementById("add-template").close();
-            }}
-          >
-            Close
-          </button>
-        </div>
-      </dialog>
+        {/* Delete Template Button */}
+        <Button
+          variant="destructive"
+          size="small"
+          className="m-0"
+          onClick={handleDeleteTemplate}
+          disabled={!props.selectedTemplate}
+        >
+          <Trash2 className="mr-1 h-3 w-3" />
+          Delete Template
+        </Button>
+      </div>
     </div>
   );
 }
