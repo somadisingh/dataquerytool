@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { CSVLink } from "react-csv";
 import Papa from 'papaparse';
 import DownloadCSVButton from '../Buttons/DownloadCsv'; 
-import '../../designs/SavedQuery.css';
+import '../designs/SavedQuery.css';
 
 const SavedQuery = () => {
 

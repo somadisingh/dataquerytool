@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import SaveQueryButton from '../Buttons/QuerySaver';
 import DownloadCSVButton from '../Buttons/DownloadCsv';
 import DeleteQueryButton from '../Buttons/DeleteQuery';
-import '../../designs/QueryBuilder.css';
+import '../designs/QueryBuilder.css';
 
 const NewQueryBuilder = () => {
   const [query, setQuery] = useState({

@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
-import LoginPage from './component/Login/LoginPage';
-import AdminConnector from './component/Connectors/AdminConnector';
-import NormalConnector from './component/Connectors/NormalConnector';
-import AdminDashboard from './component/DashBoards/AdminDashboard'
-import NormalDashboard from './component/DashBoards/NormalDashboard';
+import LoginPage from './component/query_components/Login/LoginPage';
+import AdminConnector from './component/query_components/Connectors/AdminConnector';
+import NormalConnector from './component/query_components/Connectors/NormalConnector';
+import AdminDashboard from './component/query_components/DashBoards/AdminDashboard'
+import NormalDashboard from './component/query_components/DashBoards/NormalDashboard';
 import './App.css';
 
 const App = () => {

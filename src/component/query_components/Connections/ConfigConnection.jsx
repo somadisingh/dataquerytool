@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../../designs/ConfigConnection.css';
+import '../designs/ConfigConnection.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // this component is used to configure the datasource. It takes in the url, username, password and databasename as input and sends a POST request to the backend.

@@ -1,7 +1,7 @@
 import React from "react";
 //import NewQueryBuilder from "./QueryBuilder";
 import SavedQuery from "../Functions/SavedQuery"
-import "../../designs/SavedQuery.css"
+import "../designs/SavedQuery.css"
 
 const NormalDashboard = ({onLogout}) => {
     return (

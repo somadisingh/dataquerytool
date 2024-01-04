@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import "../../designs/ViewConnection.css";
+import "../designs/ViewConnection.css";
 
 const SavedConnectionsTable = ({ savedConnections, onConnect }) => {
   return (

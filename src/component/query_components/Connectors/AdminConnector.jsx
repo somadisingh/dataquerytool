@@ -1,6 +1,6 @@
 import ConfigConnection from "../Connections/ConfigConnection.jsx";
 import {useNavigate} from "react-router-dom";
-import "../../designs/ConfigConnection.css";
+import "../designs/ConfigConnection.css";
 // admin page where you can configure the datasource and save the details if required
 const AdminConnector = ({onLogout}) => {
     const navigate = useNavigate();

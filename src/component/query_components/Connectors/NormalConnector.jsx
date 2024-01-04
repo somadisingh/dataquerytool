@@ -1,6 +1,6 @@
 import ViewConnections from "../Connections/ViewConnection.jsx";
 import {useNavigate} from "react-router-dom";
-import "../../designs/ViewConnection.css";
+import "../designs/ViewConnection.css";
 
 const NormalConnector = ({onLogout}) => {
     const navigate = useNavigate();
