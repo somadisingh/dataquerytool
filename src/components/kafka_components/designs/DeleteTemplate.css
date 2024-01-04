@@ -1,0 +1,43 @@
+/* HandleDeleteTemplateComponent.css */
+
+.container {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 15px; /* Add border-radius to the container */
+  overflow: hidden; /* Ensure the curved corners are visible */
+}
+
+.heading {
+  text-align: center;
+  color: #333;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px; /* Add border-radius to the input field */
+}
+
+.button {
+  padding: 10px;
+  background-color: #4caf50; /* Red color for delete button */
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px; /*Add border-radius to the butto */
+}
+
+.button :disabled {
+  background-color: #cccccc; /* Make the delete button grey when disabled */
+  cursor: not-allowed;
+}
+
+/* Add more styles as needed */

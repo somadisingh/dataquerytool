@@ -1,0 +1,41 @@
+/* LoginPage.css */
+
+.containerx {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+  }
+  
+  .loginBoxx {
+    width: 500px; /* Updated width */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+  }
+  
+  .input1 {
+    width: calc(100% - 20px); /* Adjusted width for input elements with added margin */
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .button1 {
+    width: 75%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .abs {
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+  
