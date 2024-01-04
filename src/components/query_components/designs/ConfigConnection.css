@@ -32,7 +32,7 @@
   }
   
   .button1 {
-    width: 100%;
+    width: 75%;
     padding: 10px;
     background-color: #4CAF50;
     color: white;
@@ -45,11 +45,13 @@
   
   .header-admin1 {
     text-align: center;
+    font-size: 24px;
   }
   
   .connector-buttons1 {
     display: flex;
     justify-content: center;
+    
     gap: 10px; /* Adjust the gap between buttons as needed */
     margin-top: 20px; /* Add margin to separate buttons from the header */
   }

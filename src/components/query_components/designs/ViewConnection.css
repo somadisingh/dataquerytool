@@ -2,7 +2,7 @@
 
 /* Styles for ViewConnections component */
 
-.container {
+.container1 {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -55,12 +55,12 @@
   
   /* Styles for NormalConnector component */
   
-  .normal-connector {
+  .normal-connector1 {
     text-align: center;
     margin-top: 2px;
   }
   
-  .normal-connector button {
+  .normal-connector1 button {
     padding: 10px;
     background-color: #4CAF50;
     color: white;

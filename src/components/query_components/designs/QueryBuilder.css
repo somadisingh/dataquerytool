@@ -1,4 +1,4 @@
-.query-builder-container {
+.query-builder-container1 {
   max-width: 800px;
   margin: 20px auto;
   padding: 20px;
@@ -12,7 +12,7 @@
   align-items: center;
 }
 
-.test {
+.test1 {
   display: flex;
   flex-direction:row;
   justify-content:space-between;
@@ -54,13 +54,13 @@
     background-color: #45a049;
   }
   
-  .loading-message {
+  .loading-message1 {
     color: #333;
     font-size: 16px;
     margin-top: 20px;
   }
   
-  .result-container {
+  .result-container1 {
     margin-top: 20px;
   }
   

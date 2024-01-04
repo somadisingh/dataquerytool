@@ -54,7 +54,7 @@ export default function AddDeleteTemplate(props) {
   return (
     <div>
       <button
-        className="button"
+        className="button2"
         onClick={(e) => {
           e.preventDefault();
           document.getElementById("add-template").showModal(); // Show the add template form as a dialog box
@@ -63,7 +63,7 @@ export default function AddDeleteTemplate(props) {
         Add Template
       </button>
       <button
-        className="del-button"
+        className="del-button2"
         onClick={handleDeleteTemplate}
         disabled={!props.selectedTemplate}
       >
@@ -72,13 +72,13 @@ export default function AddDeleteTemplate(props) {
 
       {/* Add Template Form as a dialog box */}
       <dialog id="add-template">
-        <div className="container">
-          <h3 className="heading">Add Template</h3>
-          <label className="label" htmlFor="templateName">
+        <div className="container2">
+          <h3 className="heading2">Add Template</h3>
+          <label className="label2" htmlFor="templateName">
             Template Name:
           </label>
           <input
-            className="input"
+            className="input2"
             type="text"
             id="templateName"
             value={templateName}
@@ -86,22 +86,22 @@ export default function AddDeleteTemplate(props) {
             onChange={(e) => setName(e.target.value)}
           />
 
-          <label className="label" htmlFor="templateContent">
+          <label className="label2" htmlFor="templateContent">
             Template Content:
           </label>
           <textarea
-            className="textarea"
+            className="textarea2"
             id="templateContent"
             value={templateContent}
             placeholder="Enter template content"
             onChange={(e) => setContent(e.target.value)}
           />
 
-          <button className="button" onClick={handleAddTemplate}>
+          <button className="button2" onClick={handleAddTemplate}>
             Add Template
           </button>
           <button
-            className="button"
+            className="button2"
             onClick={(e) => {
               e.preventDefault();
               document.getElementById("add-template").close();

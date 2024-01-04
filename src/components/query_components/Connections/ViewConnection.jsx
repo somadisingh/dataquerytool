@@ -29,7 +29,7 @@ const SavedConnectionsTable = ({ savedConnections, onConnect }) => {
         </tbody>
       </table>
     </div>
-  );
+  ); 
 };
 
 const ViewConnections = () => {
@@ -94,7 +94,7 @@ const ViewConnections = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container1">
       <SavedConnectionsTable savedConnections={savedConnections} onConnect={setSelectedConnection} />
       <div>
         <button className="connect-button" onClick={handleConnect} disabled={!selectedConnection}>

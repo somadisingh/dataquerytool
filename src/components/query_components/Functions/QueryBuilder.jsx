@@ -163,7 +163,7 @@ const NewQueryBuilder = () => {
   }, []);
 
   return (
-    <div className="query-builder-container">
+    <div className="query-builder-container1">
         <ToastContainer
             position="top-right"
             autoClose={2000}
@@ -188,7 +188,7 @@ const NewQueryBuilder = () => {
       </select>
 
       <label htmlFor="columnName">Select Columns:</label>
-      <div className = "test">
+      <div className = "test1">
         {columnNames.map((columnName) => (
           <div key={columnName}>
             <input

@@ -10,9 +10,9 @@ const AdminConnector = ({onLogout}) => {
       };
 
       return (
-        <div className="container">
-          <h1 className="header-admin">Configure Connection Dashboard</h1>
-          <div className="connector-buttons">
+        <div className="container1">
+          <h1 className="header-admin1">Configure Connection Dashboard</h1>
+          <div className="connector-buttons1">
             <button onClick={onLogout}>LogOut</button>
             <button onClick={handleGoToDashboard}>Go to Dashboard</button>
           </div>

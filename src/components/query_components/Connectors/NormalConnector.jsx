@@ -10,7 +10,7 @@ const NormalConnector = ({onLogout}) => {
       };
  
       return (
-        <div className="normal-connector">
+        <div className="normal-connector1">
           <h1>Connect Dashboard</h1>
           <button onClick={onLogout}>LogOut</button>
           <button onClick={handleGoToDashboard}>Go to Dashboard</button>

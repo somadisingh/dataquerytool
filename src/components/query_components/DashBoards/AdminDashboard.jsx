@@ -5,7 +5,7 @@ import "../designs/QueryBuilder.css"
 
 const AdminDashboard = ({onLogout}) => {
     return (
-        <div className ="query-builder-container">
+        <div className ="query-builder-container1">
             <h1>Admin Dashboard</h1>
             <button onClick={onLogout}>LogOut</button>
             <NewQueryBuilder />
