@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import "../designs/ViewConnection.css";
+//import "../designs/ViewConnection.css";
+import { Button } from "../../ui/button";
 
 const SavedConnectionsTable = ({ savedConnections, onConnect }) => {
   return (
@@ -94,12 +95,12 @@ const ViewConnections = () => {
   };
 
   return (
-    <div className="container1">
+    <div>
       <SavedConnectionsTable savedConnections={savedConnections} onConnect={setSelectedConnection} />
       <div>
-        <button className="connect-button" onClick={handleConnect} disabled={!selectedConnection}>
+        <Button size="small" className="m-1" onClick={handleConnect} disabled={!selectedConnection}>
           Connect
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -14,6 +14,7 @@ import { Button } from "../../ui/button";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
 import { CopyPlus, Trash2 } from "lucide-react";
+import {toast} from 'react-toastify';
 
 // This component is used to add and delete templates.
 export default function AddDeleteTemplate(props) {
@@ -23,6 +24,7 @@ export default function AddDeleteTemplate(props) {
 
   const handleAddTemplate = (e) => {
     e.preventDefault();
+    //console.log("Testing");
     const templateData = {
       templateName: templateName,
       templateContent: templateContent,
@@ -32,12 +34,18 @@ export default function AddDeleteTemplate(props) {
       .post("http://localhost:8081/template/save", templateData)
       .then((response) => {
         console.log("Template added successfully:", response.data);
+        toast.success('Template added successfully!', {
+          position: toast.POSITION.TOP_CENTER,
+        });
         setName("");
         setContent("");
         document.getElementById("close-add-dialog").click(); // Close the add template form dialog box
       })
       .catch((error) => {
         console.error("Error adding template:", error);
+        toast.error('Error adding template. Please try again.', {
+          position: toast.POSITION.TOP_CENTER,
+        });
       });
   };
 
@@ -57,9 +65,15 @@ export default function AddDeleteTemplate(props) {
           props.selectedTemplate.id
         );
         props.setSelectedTemplate(null);
+        toast.success('Template deleted successfully!', {
+          position: toast.POSITION.TOP_CENTER,
+        });
       })
       .catch((error) => {
         console.error("Error deleting template:", error);
+        toast.error('Error deleting template. Please try again.', {
+          position: toast.POSITION.TOP_CENTER,
+        });
       });
   };
 

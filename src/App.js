@@ -165,9 +165,9 @@ const App = () => {
         return <Navigate to="/queryLogin/normal" />;
       }
     } else if (userType === "admin") {
-      return <Navigate to="/admin" />;
+      return <Navigate to="/kafkaLogin/admin" />;
     } else {
-      return <Navigate to="/normal" />;
+      return <Navigate to="/kafkaLogin/normal" />;
     }
   }
 
@@ -191,7 +191,7 @@ const App = () => {
           }
         />
         <Route
-          path="/admin"
+          path="/kafkaLogin/admin"
           element={
             userType === "admin" ? (
               <AdminSection onLogout={handleLogout} />
@@ -201,7 +201,7 @@ const App = () => {
           }
         />
         <Route
-          path="/normal"
+          path="/kafkaLogin/normal"
           element={
             userType === "normal" ? (
               <NormalSection onLogout={handleLogout} />

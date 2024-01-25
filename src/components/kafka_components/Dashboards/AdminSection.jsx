@@ -4,11 +4,13 @@ import AddDeleteTemplate from "../Buttons/AddDeleteTemplate";
 import UseTemplate from "../Functions/UseTemplate";
 import axios from "axios";
 import MaxWidthWrapper from "../../MaxWidthWrapper";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
+  // CardDescription,
+  // CardFooter,
   CardHeader,
   CardTitle,
 } from "../../ui/card";
@@ -21,26 +23,49 @@ import { LogOut } from "lucide-react";
 const AdminSection = ({ onLogout }) => {
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [kafkaServer, setKafkaServer] = useState("");
+  const [displayType, setDisplayType] = useState("");
 
   useEffect(() => {
-    console.log("Selected Template:", selectedTemplate);
+    console.log("Selected Template on Admin End:", selectedTemplate);
+    //console.log("display type on admin: ", displayType);
   }, [selectedTemplate]);
 
-  const handleUpdateConfig = () => {
+  const handleUpdateConfig = (e) => {
+    e.preventDefault();
     axios
       .post("http://localhost:8081/server/update", {
         kafkaServer: kafkaServer,
       })
       .then((response) => {
         console.log(response.data);
+        toast.success('Kafka configuration updated successfully!', {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        console.log("Kafka configuration updated successfully.");
       })
       .catch((error) => {
         console.error("Error updating Kafka configuration:", error);
+        toast.error('Error updating Kafka configuration. Please try again.', {
+          position: toast.POSITION.TOP_CENTER,
+        });
       });
   };
 
   return (
+    
     <MaxWidthWrapper className="container mt-2">
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        pauseOnHover
+        draggable
+        theme="colored"
+      />
       <H2 className="flex items-center justify-between w-full">
         <span>Kafka Admin Dashboard</span>{" "}
         <Button variant="destructive" onClick={onLogout}>
@@ -67,7 +92,7 @@ const AdminSection = ({ onLogout }) => {
         </div>
         <Button
           className="mb-0"
-          onClick={handleUpdateConfig}
+          onClick={(e) => handleUpdateConfig(e)}
           disabled={!kafkaServer}
         >
           Update Kafka Configuration
@@ -83,11 +108,20 @@ const AdminSection = ({ onLogout }) => {
             selectedTemplate={selectedTemplate}
             setSelectedTemplate={setSelectedTemplate}
           />
-          <PresetTemplate2 setSelectedTemplate={setSelectedTemplate} />
+          <PresetTemplate2
+            setSelectedTemplate={setSelectedTemplate}
+            setDisplayType={setDisplayType}
+          />
           <UseTemplate
             selectedTemplate={
-              selectedTemplate && selectedTemplate.template_content
+              selectedTemplate &&
+              (displayType === "plaintext"
+                ? selectedTemplate.template_content
+                : displayType === "json"
+                ? JSON.stringify(selectedTemplate.jsontemplate_content)
+                : null)
             }
+            displayType={displayType}
           />
         </CardContent>
       </Card>

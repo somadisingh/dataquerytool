@@ -17,10 +17,22 @@ import {
   CardHeader,
   CardTitle,
 } from "../../ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "../../ui/dialog";
 import { Button } from "../../ui/button";
 import { Input } from "../../ui/input";
 import { Label } from "../../ui/label";
 import { H2, H3, H4, Para } from "../../ui/typography";
+//<Play />
+import { Play, PencilRuler } from "lucide-react";
 
 const NewQueryBuilder = () => {
   const [query, setQuery] = useState({
@@ -44,6 +56,8 @@ const NewQueryBuilder = () => {
   const [csvData, setCsvData] = useState([]);
   const [savedQueries, setSavedQueries] = useState([]);
   const [selectedQueryId, setSelectedQueryId] = useState("");
+  const [responseCode, setResponseCode] = useState("");
+  const [typedQuery, setTypedQuery] = useState("");
 
   const apiEndpoint = "http://localhost:8080/api/customquery/execute";
 
@@ -59,6 +73,15 @@ const NewQueryBuilder = () => {
       setLoading(true);
       const response = await axios.post(apiEndpoint, { sql });
       const result = response.data;
+      //console.log(response);
+      setResponseCode(response.status);
+      //console.log(responseCode);
+      // document.getElementById("close-add-dialog").click();
+      if (responseCode === 200) {
+        setFinalQuery(sql);
+        //document.getElementById("close-add-dialog").click();
+      }
+      //   //document.getElementById("close-add-dialog").click();
 
       if (
         !sql.toLowerCase().includes("show tables") &&
@@ -67,9 +90,14 @@ const NewQueryBuilder = () => {
         !sql.toLowerCase().includes("save_query")
       ) {
         setResult(result);
+        document.getElementById("close-add-dialog").click();
+        //console.log("result populated");
       }
 
-      if (sql.toLowerCase().includes("show tables")) setTableNames(result);
+      if (sql.toLowerCase().includes("show tables")) {
+        setTableNames(result);
+        //console.log(result);
+      }
       if (sql.toLowerCase().includes("save_query")) setSavedQueries(result);
       if (sql.toLowerCase().includes("describe")) {
         setColumnNames(result.map((column) => column.Field));
@@ -171,10 +199,18 @@ const NewQueryBuilder = () => {
     const selectedColumnString = selectedColumns.join(", ");
     formattedQuery1 = `select ${selectedColumnString} from ${selectedTable} where ${formattedQuery1}`;
     setFinalTable(selectedTable);
-    console.log(formattedQuery1);
-    setFinalQuery(formattedQuery1);
+    //console.log(formattedQuery1);
+    //setFinalQuery(formattedQuery1);
     runCustomQuery(formattedQuery1);
     setSelectedColumns([]);
+  };
+
+  const handleTypedQuery = (e) => {
+    e.preventDefault();
+    // document.getElementById("close-add-dialog").click();
+    console.log(typedQuery);
+    runCustomQuery(typedQuery);
+    // setFinalQuery(typedQuery);
   };
 
   useEffect(() => {
@@ -190,6 +226,7 @@ const NewQueryBuilder = () => {
   }, [loading, formattedQuery, selectedTable]);
 
   useEffect(() => {
+    //runCustomQuery("use somadi");
     runCustomQuery("select database()");
     runCustomQuery("show tables");
     runCustomQuery("select * from save_query");
@@ -250,26 +287,118 @@ const NewQueryBuilder = () => {
         query={query}
         onQueryChange={handleQueryChange}
       />
-
-      <button onClick={handleExecuteQuery}>Execute Query</button>
       <br />
 
-      <Input
+      <div className="flex space-x-4">
+        <Button size="small" className="m-1" onClick={handleExecuteQuery}>
+          Execute Query <Play className="ml-1 h-4 w-4" />
+        </Button>
+        {/* <Button size="small" className="m-1" onClick={handleExecuteQuery}>
+          Enter Custom Query <PencilRuler className="ml-1 h-4 w-4" />
+        </Button> */}
+
+        {/* ----------------------- */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button size="small" className="m-1">
+              Enter Custom Query <PencilRuler className="ml-1 h-4 w-4" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[640px]">
+            <DialogHeader>
+              <DialogTitle>Custom query</DialogTitle>
+              <DialogDescription>
+                Type your own custom query. If there are any placeholders then
+                make sure{" "}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4"></div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="username" className="text-right m-0">
+                  Query
+                </Label>
+                <Input
+                  id="queryContent"
+                  className="col-span-3 m-0"
+                  placeholder="select * from table_name where column_name = 'value'"
+                  value={typedQuery}
+                  onChange={(e) => setTypedQuery(e.target.value)}
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button
+                size="small"
+                className="m-1"
+                type="submit"
+                onClick={handleTypedQuery}
+              >
+                Update & Run Query
+              </Button>
+
+              {/* Hidden button to trigger close action after submission */}
+              <DialogClose asChild>
+                <Button type="button" id="close-add-dialog" className="hidden">
+                  Close
+                </Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+      <br />
+      {/* ------------------- */}
+
+      {/* <Input
         type="text"
         value={queryDescription}
         onChange={(e) => setQueryDescription(e.target.value)}
         placeholder="Query Description"
-      />
-      <SaveQueryButton
+      /> */}
+      {result.length > 0 && responseCode === 200 && (
+        <Input
+          type="text"
+          value={queryDescription}
+          onChange={(e) => setQueryDescription(e.target.value)}
+          placeholder="Query Description"
+        />
+      )}
+      {/* <SaveQueryButton
         formattedQuery={finalQuery}
         queryDescription={queryDescription}
         databasename={databaseName}
         table_name={finaltable}
         runCustomQuery={runCustomQuery}
-      />
+      /> */}
+
+      {/* {result.length > 0 && (
+        <div>
+          <SaveQueryButton
+            formattedQuery={finalQuery}
+            queryDescription={queryDescription}
+            databasename={databaseName}
+            table_name={finaltable}
+            runCustomQuery={runCustomQuery}
+          />
+        </div>
+      )}
 
       {result.length > 0 && (
         <div>
+          <DownloadCSVButton csvData={csvData} />
+        </div>
+      )} */}
+
+      {result.length > 0 && responseCode === 200 && (
+        <div className="flex space-x-4">
+          <SaveQueryButton
+            formattedQuery={finalQuery}
+            queryDescription={queryDescription}
+            databasename={databaseName}
+            table_name={finaltable}
+            runCustomQuery={runCustomQuery}
+          />
           <DownloadCSVButton csvData={csvData} />
         </div>
       )}

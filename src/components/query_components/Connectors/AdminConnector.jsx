@@ -23,7 +23,7 @@ const AdminConnector = ({ onLogout }) => {
           <Button
             className="m-0"
             onClick={handleGoToDashboard}
-            // disabled={!connectionStatus}
+            disabled={!connectionStatus}
           >
             Go to Dashboard <Gauge className="ml-2 w-4 h-4" />
           </Button>
