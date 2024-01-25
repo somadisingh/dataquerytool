@@ -25,7 +25,12 @@ public class CustomQueryController {
     @PostMapping("/execute")
     public List<Map<String, Object>> executeCustomQuery(@RequestBody String sql) {
         sql = sql.substring(8, sql.length() - 2);
-
+        System.out.println(sql);
+        //sql = "show tables;";
+        // System.out.println(sql);
+        //customQueryService.runCustomQuery(sql);
+        // List<Map<String, Object>> result = customQueryService.runCustomQuery(sql);
+        // System.out.println(result);
         return customQueryService.runCustomQuery(sql);
     }
 }

@@ -30,6 +30,7 @@ public class ConnectionController {
         
         try {
             dataSourceConfigService.configureDatasource(config);
+            System.out.println("Connection details llllllllllll successfully. ID: " + config.getUrl());
             return ResponseEntity.ok("Datasource configured successfully!");
             // String n = config.toString();
         } catch (Exception e) {
